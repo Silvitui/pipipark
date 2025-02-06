@@ -18,7 +18,6 @@
     "resolveJsonModule": true,          // Permite importar archivos `.json`
     "esModuleInterop": true,            // Permite importar paquetes CommonJS con sintaxis de ES Modules
 
-    // 🚀 Configuración para Express y Node.js
     "forceConsistentCasingInFileNames": true, // Evita errores por diferencias en mayúsculas/minúsculas en rutas de archivos
     "allowSyntheticDefaultImports": true, // Permite importar módulos sin `default` export
     "types": ["node", "express"]         // Incluye las definiciones de tipos de Node.js y Express
