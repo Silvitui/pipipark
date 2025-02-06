@@ -16,7 +16,7 @@ export interface Dog {
 export interface ParkVisitType {
     _id: Types.ObjectId;
     park: Types.ObjectId;
-    user: Types.ObjectId | User; // 🔥 Ahora puede ser un ObjectId o un User
+    user: Types.ObjectId | User; 
     dogs: Types.ObjectId[] | Dog[];
 }
 

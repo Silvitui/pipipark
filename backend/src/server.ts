@@ -5,14 +5,13 @@ import cors from 'cors';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
 import { DBconnection } from './DB/connection';
-// import userRouter from './routes/user.routes';
-// import authRouter from './routes/auth.routes';
-// import calendarRouter from './routes/calendar.routes';
-// import mapRouter from './routes/map.routes';
-// import statsRouter from './routes/statistics.routes';
-// import dogsRouter from './routes/dogs.routes';
-// import authMiddleware from './middlewares/authMiddleware';
 import { options } from './utils/config/cors';
+import authRouter from './routes/auth.routes';
+import dogsRouter from './routes/dogs.routes';
+import usersRouter from './routes/user.routes';
+import authMiddleware from './middlewares/authMiddlewares';
+import parksRouter from './routes/park.routes';
+import statsRouter from './routes/statistics.routes';
 
 const app = express();
 const PORT = +(process.env.PORT ?? 3000);
@@ -23,16 +22,16 @@ app.use(cookieParser());
 app.use(cors(options));
 app.use(morgan('dev'));
 
-// app.use("/api/auth", authRouter);
-// app.use("/api/user", authMiddleware, userRouter);
-// app.use("/api/calendar", authMiddleware, calendarRouter);
-// app.use("/api/map", authMiddleware, mapRouter);
-// app.use("/api/stats", authMiddleware, statsRouter);
-// app.use("/api/dogs", authMiddleware, dogsRouter); 
+app.use("/api/auth", authRouter);
+app.use("/api/dogs",authMiddleware, dogsRouter);
+app.use("/api/users",authMiddleware, usersRouter)
+app.use("/api/parks",authMiddleware,parksRouter)
+app.use("/api/stats",authMiddleware,statsRouter)
 
-// Ruta de prueba
+
+
 app.get('/', (_req: Request, res: Response) => {
-    res.send('🐶 Bienvenido a PIPIPARK! 🐾');
+    res.send('🐶 Bienvenido a PIPIPARK! 🐾🎈🌸🥰');
 });
 
 // Servidor y conexión a DB

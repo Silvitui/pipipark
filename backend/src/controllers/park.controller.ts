@@ -11,13 +11,16 @@ export const getDogsInPark = async (req: Request, res: Response) => {
             .populate('dogs'); //Trae toda la información de los perros
 
         if (!visits.length) {
-            return res.status(200).json({ parkId, dogsInPark: [] });
+            res.status(200).json({ parkId, dogsInPark: [] });
+            return 
         }
 
-        return res.status(200).json({ parkId, dogsInPark: visits });
+        res.status(200).json({ parkId, dogsInPark: visits });
+        return
     } catch (error) {
         console.error("Error en getDogsInPark:", error);
-        return res.status(500).json({ message: "Error al obtener perros en el parque" });
+        res.status(500).json({ message: "Error al obtener perros en el parque" });
+        return
     }
 };
 
@@ -25,7 +28,8 @@ export const checkInPark = async (req: Request, res: Response) => {
     try {
         const { parkId, userId, dogIds } = req.body;
         if (!parkId || !userId || !dogIds || !dogIds.length) {
-            return res.status(400).json({ error: "Todos los campos son obligatorios." });
+            res.status(400).json({ error: "Todos los campos son obligatorios." });
+            return 
         }
 
         const newVisit = new ParkVisit({
@@ -36,10 +40,12 @@ export const checkInPark = async (req: Request, res: Response) => {
 
         await newVisit.save();
 
-        return res.status(201).json({ message: "Check-in realizado con éxito", visit: newVisit });
+        res.status(201).json({ message: "Check-in realizado con éxito", visit: newVisit });
+        return
     } catch (error) {
         console.error("Error en checkInPark:", error);
-        return res.status(500).json({ message: "Error al hacer check-in en el pipicán" });
+        res.status(500).json({ message: "Error al hacer check-in en el pipicán" });
+        return 
     }
 };
 
@@ -49,18 +55,22 @@ export const checkOutPark = async (req: Request, res: Response) => {
         const { parkId, userId } = req.body;
 
         if (!parkId || !userId) {
-            return res.status(400).json({ error: "Se requieren parkId y userId." });
+            res.status(400).json({ error: "Se requieren parkId y userId." });
+            return
         }
 
         const deletedVisit = await ParkVisit.findOneAndDelete({ park: parkId, user: userId });
 
         if (!deletedVisit) {
-            return res.status(404).json({ error: "No se encontró un registro para este usuario en este pipicán." });
+            res.status(404).json({ error: "No se encontró un registro para este usuario en este pipicán." });
+            return
         }
 
-        return res.status(200).json({ message: "Check-out realizado con éxito" });
+        res.status(200).json({ message: "Check-out realizado con éxito" });
+        return 
     } catch (error) {
         console.error("Error en checkOutPark:", error);
-        return res.status(500).json({ message: "Error al hacer check-out del pipicán" });
+        res.status(500).json({ message: "Error al hacer check-out del pipicán" });
+        return
     }
 };

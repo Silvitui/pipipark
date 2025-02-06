@@ -6,12 +6,14 @@ export const addDog = async (req: Request, res: Response) => {
     try {
         const { userId, name, breed, age, size, photo } = req.body;
         if (!userId || !name || !breed || !age || !size) {
-            return res.status(400).json({ error: "Todos los campos del perro son obligatorios." });
+            res.status(400).json({ error: "Todos los campos del perro son obligatorios." });
+            return
         }
 
         const user = await User.findById(userId);
         if (!user) {
-            return res.status(404).json({ error: "Usuario no encontrado" });
+            res.status(404).json({ error: "Usuario no encontrado" });
+            return 
         }
         const newDog = new Dog({
             name,
@@ -27,10 +29,12 @@ export const addDog = async (req: Request, res: Response) => {
         user.dogs.push(newDog._id);
         await user.save();
 
-        return res.status(201).json({ message: "Perro agregado correctamente", dog: newDog });
+        res.status(201).json({ message: "Perro agregado correctamente", dog: newDog });
+        return 
     } catch (error) {
         console.error("Error en addDog:", error);
-        return res.status(500).json({ message: "Error al agregar perro" });
+        res.status(500).json({ message: "Error al agregar perro" });
+        return 
     }
 };
 
@@ -40,13 +44,16 @@ export const getDogsByUser = async (req: Request, res: Response) => {
         const user = await User.findById(userId).populate('dogs');
 
         if (!user) {
-            return res.status(404).json({ error: "Usuario no encontrado" });
+            res.status(404).json({ error: "Usuario no encontrado" });
+            return 
         }
 
-        return res.status(200).json({ dogs: user.dogs });
+        res.status(200).json({ dogs: user.dogs });
+        return 
     } catch (error) {
         console.error("Error en getDogsByUser:", error);
-        return res.status(500).json({ error: "Error al obtener los perros del usuario" });
+        res.status(500).json({ error: "Error al obtener los perros del usuario" });
+        return 
     }
 };
 
@@ -59,13 +66,16 @@ export const updateDog = async (req: Request, res: Response) => {
         const updatedDog = await Dog.findByIdAndUpdate(dogId, updateFields, { new: true });
 
         if (!updatedDog) {
-            return res.status(404).json({ error: "Perro no encontrado" });
+            res.status(404).json({ error: "Perro no encontrado" });
+            return 
         }
 
-        return res.status(200).json({ message: "Perro actualizado correctamente", dog: updatedDog });
+        res.status(200).json({ message: "Perro actualizado correctamente", dog: updatedDog });
+        return 
     } catch (error) {
         console.error("Error en updateDog:", error);
-        return res.status(500).json({ error: "Error al actualizar el perro" });
+        res.status(500).json({ error: "Error al actualizar el perro" });
+        return 
     }
 };
 
@@ -76,11 +86,14 @@ export const deleteDog = async (req: Request, res: Response) => {
 
         const deletedDog = await Dog.findByIdAndDelete(dogId);
         if (!deletedDog) {
-            return res.status(404).json({ error: "Perro no encontrado" });
+            res.status(404).json({ error: "Perro no encontrado" });
+            return 
         }
-        return res.status(200).json({ message: "Perro eliminado correctamente" });
+        res.status(200).json({ message: "Perro eliminado correctamente" });
+        return
     } catch (error) {
         console.error("Error en deleteDog:", error);
-        return res.status(500).json({ error: "Error al eliminar el perro" });
+        res.status(500).json({ error: "Error al eliminar el perro" });
+        return
     }
 };
