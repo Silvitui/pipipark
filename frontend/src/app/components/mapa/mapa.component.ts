@@ -1,6 +1,6 @@
 import { Component, AfterViewInit } from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
-import { environment } from '../../environment'; 
+import { environment } from '../../../environment'; 
 import { RouterModule } from '@angular/router';
 
 @Component({

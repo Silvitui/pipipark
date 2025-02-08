@@ -6,11 +6,12 @@
 /out-tsc
 /bazel-out
 
+
 # Node
 /node_modules
 npm-debug.log
 yarn-error.log
-src/environment.ts
+
 # IDEs and editors
 .idea/
 .project
@@ -40,3 +41,9 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+
+# Ignorar environments
+# Ignorar environment.ts en src/app
+src/environment.ts
+
