@@ -4,7 +4,14 @@ export default {
     "./src/**/*.{html,ts,scss}"
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ['Poppins', 'sans-serif'],
+      },
+      spacing: {
+        'xxs': '0.125rem' // Añadimos el tamaño personalizado
+      },
+    },
   },
   plugins: [require("daisyui")],
 };

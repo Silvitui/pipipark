@@ -6,9 +6,9 @@ import Dog from '../models/Dog';
 
 export const registerUser = async (req: Request, res: Response) => {
     try {
-        const { userName, email, password, dogs } = req.body;
-        if (!userName || !email || !password || !dogs || !Array.isArray(dogs) || dogs.length === 0) {
-            res.status(400).json({ error: "Debes registrar al menos un perro." });
+        const { userName, email, password, dog} = req.body;
+        if (!userName || !email || !password || !dog) {
+            res.status(400).json({ error: "Todos los campos son obligatorios" });
             return 
         }
         const existingUser = await User.findOne({ email });
@@ -18,24 +18,24 @@ export const registerUser = async (req: Request, res: Response) => {
         }
         const hashedPassword = await bcrypt.hash(password, 10);
         const newUser = new User({ userName, email, password: hashedPassword });
-        const dogPromises = dogs.map(dogData => new Dog({
-            gender: dogData.gender,
-            age: dogData.age,
-            breed: dogData.breed,
-            name: dogData.name,
-            size: dogData.size,
-            personality: dogData.personality,
-            photo: dogData.photo ,
+        const newDog = new Dog({
+            name: dog.name,
+            gender: dog.gender,
+            breed: dog.breed,
+            age: dog.age,
+            size: dog.size,
+            personality: dog.personality,
             owner: newUser._id
-        }));
-        const savedDogs = await Dog.insertMany(dogPromises);
-        newUser.dogs = savedDogs.map(dog => dog._id);
+        });
+        const savedDog = await newDog.save();
+        newUser.dogs = [savedDog._id];
+        newUser.dogs = [savedDog._id];
         await newUser.save();
 
         res.status(201).json({ 
             message: "Usuario y perros registrados correctamente", 
             user: newUser, 
-            dogs: savedDogs 
+            dogs: [savedDog] 
         });
         return 
     } catch (error) {
@@ -44,6 +44,8 @@ export const registerUser = async (req: Request, res: Response) => {
         return 
     }
 };
+
+
 
 
 export const loginUser = async (req: Request, res: Response) => {
@@ -69,8 +71,6 @@ export const loginUser = async (req: Request, res: Response) => {
 
  
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET!, { expiresIn: '1d' });
-
-        // 🔥 Guardar el token en una cookie segura
         res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === "production" });
 
         res.status(200).json({ 
@@ -85,9 +85,10 @@ export const loginUser = async (req: Request, res: Response) => {
     }
 };
 
-// 🔥 LOGOUT DE USUARIO
 export const logoutUser = (_req: Request, res: Response) => {
     res.clearCookie('token');
     res.status(200).json({ message: "Sesión cerrada correctamente" });
     return 
+
+    
 };

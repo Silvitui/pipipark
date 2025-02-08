@@ -4,10 +4,15 @@ import User from '../models/User';
 
 export const addDog = async (req: Request, res: Response) => {
     try {
-        const { userId, name, breed, age, size, photo } = req.body;
-        if (!userId || !name || !breed || !age || !size) {
-            res.status(400).json({ error: "Todos los campos del perro son obligatorios." });
-            return
+        const { userId, name, gender, breed, age, size, photo, personality } = req.body;
+        if (!userId || !name || !gender || !breed || !age || !size || !personality || personality.length === 0) {
+            res.status(400).json({ error: "Todos los campos del perro son obligatorios, incluyendo personalidad." });
+            return 
+        }
+        const parsedAge = Number(age);
+        if (isNaN(parsedAge) || parsedAge < 0) {
+            res.status(400).json({ error: "La edad debe ser un número válido." });
+            return 
         }
 
         const user = await User.findById(userId);
@@ -17,10 +22,12 @@ export const addDog = async (req: Request, res: Response) => {
         }
         const newDog = new Dog({
             name,
+            gender,
             breed,
-            age,
+            age: parsedAge, 
             size,
             photo: photo || "https://via.placeholder.com/150",
+            personality,
             owner: userId
         });
 
@@ -31,6 +38,7 @@ export const addDog = async (req: Request, res: Response) => {
 
         res.status(201).json({ message: "Perro agregado correctamente", dog: newDog });
         return 
+        
     } catch (error) {
         console.error("Error en addDog:", error);
         res.status(500).json({ message: "Error al agregar perro" });

@@ -2,32 +2,35 @@ import mongoose from 'mongoose';
 
 const DogSchema = new mongoose.Schema({
   name: { type: String, required: true, trim: true },
+  gender: {type: String, required: true},
   breed: { type: String, required: true, trim: true }, 
   age: { type: Number, required: true }, 
-  size: { type: String, enum: ['small', 'medium', 'big'], required: true }, 
+  size: { type: String, required: true }, 
   owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  photo: { type: String, default: "https://via.placeholder.com/150" }, 
   personality: { 
     type: [String], 
     enum: [
-      'playful',
-      'calm',
-      'protective',
-      'affectionate',
-      'curious',
-      'energetic',
-      'grumpy',
-      'obedient',
-      'brave',
-      'independent',
-      'shy',
-      'dominant',
-      'friendly',
-      'lazy',
-      'intelligent'
+'aventurero',
+'tranquilo',
+'protector',
+'curioso',
+'energético',
+'gruñón',
+'obediente',
+'valiente',
+'independiente',
+'tímido',
+'dominante',
+'amistoso',
+'perezoso',
+'inteligente',
+'juguetón'
+
     ], 
     required: true 
-  }
+  },
+  photo: { type: String, default: "https://via.placeholder.com/150" }, 
+
 });
 
 const Dog = mongoose.model('Dog', DogSchema);

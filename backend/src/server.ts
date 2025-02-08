@@ -34,7 +34,6 @@ app.get('/', (_req: Request, res: Response) => {
     res.send('🐶 Bienvenido a PIPIPARK! 🐾🎈🌸🥰');
 });
 
-// Servidor y conexión a DB
 app.listen(PORT, () => {
     console.log(`🔥 Servidor corriendo en http://localhost:${PORT}`);
     DBconnection();

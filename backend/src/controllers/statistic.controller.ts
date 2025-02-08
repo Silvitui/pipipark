@@ -6,12 +6,12 @@ export const getHours = async (_req: Request, res: Response) => {
         const peakHours = await ParkVisit.aggregate([
             {
                 $project: {
-                    hour: { $hour: "$entryTime" } // Extraer la hora de entrada del perro
+                    hour: { $hour: "entryTime" } // Extraer la hora de entrada del perro
                 }
             },
             {
                 $group: {
-                    _id: "$hour",
+                    _id: "hour",
                     count: { $sum: 1 } // Contar cuantos registros hay por hora
                 }
             },

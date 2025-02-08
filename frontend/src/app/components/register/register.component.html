@@ -1,0 +1,93 @@
+<div class="register-container bg-yellow-200">
+  <div class="register-card shadow-2xl ring-2 ring-gray-300 rounded-lg p-6">
+    <img src="assets/connectapet2.png" 
+         alt="Perrito"
+         class="register-image">
+    <button (click)="goToHome()"
+            class="btn btn-circle btn-outline absolute top-4 right-4 hover:bg-purple-500 hover:text-white transition">
+      <svg xmlns="http://www.w3.org/2000/svg"
+           class="h-6 w-6"
+           fill="none"
+           viewBox="0 0 24 24"
+           stroke="currentColor">
+        <path stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+
+    @if (authService.isAuthenticated()) {
+      <h2 class="text-4xl font-bold text-center text-gray-900 mb-8">
+        🎉 ¡Bienvenido, amigo perruno! 🐾🐕
+      </h2>
+    }
+    <h2 class="text-3xl font-bold text-center text-gray-900 mb-6">
+      {{ questions[currentStep()].question }}
+    </h2>
+    @if (questions[currentStep()].type === 'text' || questions[currentStep()].type === 'email' || questions[currentStep()].type === 'password') {
+      <input type="{{ questions[currentStep()].type }}" 
+             [(ngModel)]="answers()[questions[currentStep()].field]" 
+             class="register-input"
+             placeholder="Escribe aquí..."
+             (keyup.enter)="nextStep()">
+    }
+
+ 
+    @if (questions[currentStep()].type === 'number') {
+      <input type="number"
+             [(ngModel)]="answers()[questions[currentStep()].field]"
+             class="register-input"
+             placeholder="Introduce la edad en años"
+             min="0"
+             (keyup.enter)="nextStep()">
+    }
+
+ 
+    @if (questions[currentStep()].type === 'size') {
+      <input type="text"
+             [(ngModel)]="answers()[questions[currentStep()].field]"
+             class="register-input"
+             placeholder="Pequeño, mediano, grande..."
+             (keyup.enter)="nextStep()">
+    }
+
+  
+    @if (questions[currentStep()].type === 'multi-select') {
+      <div class="grid grid-cols-2 gap-4">
+        @for (option of questions[currentStep()].options; track option) {
+          <label class="flex items-center bg-gray-300 px-4 py-3 rounded-lg cursor-pointer shadow-md hover:bg-gray-400 transition">
+            <input type="checkbox" 
+                   (change)="addPersonality(option)" 
+                   [checked]="answers()['personality']?.includes(option)" 
+                   class="checkbox">
+            <span class="ml-2 text-gray-900 font-semibold">{{ option }}</span>
+          </label>
+        }
+      </div>
+    }
+
+   
+    @if (questions[currentStep()].type === 'file') {
+      <label for="file-upload" class="file-label">
+        📷 Haz clic aquí para subir una foto
+      </label>
+      <input type="file" id="file-upload" (change)="handleFileInput($event)" class="hidden">
+    }
+    <div class="flex justify-between mt-6 space-x-4">
+      @if (currentStep() > 0) {
+        <button class="btn bg-purple-600 text-white text-sm rounded-full shadow-md hover:bg-purple-900 transition mt-2"
+                (click)="prevStep()">Atrás</button>
+      }
+      @if (currentStep() < questions.length - 1) {
+        <button class="btn bg-purple-600 text-white text-sm rounded-full shadow-md hover:bg-purple-700 transition mt-2"
+                (click)="nextStep()">Siguiente</button>
+      }
+      @if (currentStep() === questions.length - 1) {
+        <button class="btn bg-purple-700 text-white text-sm rounded-full shadow-md hover:bg-purple-800 transition"
+                (click)="submitForm()">Finalizar</button>
+      }
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,60 @@
+<div class="bg-yellow-200 min-h-screen w-full">
+  <nav class="relative flex items-center justify-between px-6 lg:px-16 py-4">
+    <div class="flex-shrink-0">
+      <img src="assets/logo_cropped.png" class="h-[12px] sm:h-[24px] md:h-[20px] lg:h-[28px] xl:h-10 w-auto object-contain mt-5">
+    </div>
+
+    <div class="hidden md:flex absolute left-1/2 top-4 transform -translate-x-1/2 space-x-8 mt-3">
+      <a (click)="goToMap()" href="/map" class="link link-purple">📍Mapa</a>
+      <a href="/calendar" class="link link-purple">📆Calendario</a>
+      <a href="/stats" class="link link-purple">📈Gráficos</a>
+    </div>
+
+    <div class="hidden md:flex absolute top-4 right-6 flex-row gap-2">
+      @if (!authService.isAuthenticated()) {
+        <div class="flex flex-col lg:flex-row gap-2">
+          <button (click)="goToLogin()" class="btn btn-xs sm:btn-sm md:btn-xs lg:btn-xs xl:btn-sm btn-outline bg-purple-300 text-black ">
+            Iniciar sesión
+          </button>
+          <button (click)="goToRegister()" class="btn btn-xs sm:btn-sm md:btn-xs lg:btn-xs xl:btn-sm btn-outline bg-gray-100 text-black">
+            Registrarse
+          </button>
+        </div>
+      }
+      @else {
+        <button (click)="logout()" class="btn btn-sm btn-outline bg-purple-400 text-white">Desconectarse</button>
+      }
+    </div>
+    <div class="md:hidden absolute top-4 right-6">
+      <button class="btn btn-sm bg-purple-500 text-white" (click)="toggleMenu()">☰</button>
+    </div>
+  </nav>
+
+  @if (isMenuOpen) {
+    <div class="md:hidden absolute top-16 left-0 w-full bg-white shadow-lg py-3 flex flex-col items-center">
+      <a href="/map" class="w-full text-center py-2 hover:bg-gray-200">📍 Mapa</a>
+      <a href="/calendar" class="w-full text-center py-2 hover:bg-gray-200">📆 Calendario</a>
+      <a href="/stats" class="w-full text-center py-2 hover:bg-gray-200">📈 Gráficos</a>
+      
+      <hr class="w-full border-t my-2" />
+
+      @if (!authService.isAuthenticated()) {
+        <button (click)="goToLogin()" class="btn btn-sm w-11/12 my-2 bg-purple-300 text-black">Iniciar sesión</button>
+        <button (click)="goToRegister()" class="btn btn-sm w-11/12 bg-gray-100 text-black">Registrarse</button>
+      } @else {
+        <button (click)="logout()" class="btn btn-sm w-11/12 my-2 bg-purple-400 text-white">Desconectarse</button>
+      }
+    </div>
+  }
+  <main class="flex flex-col items-center text-center pt-6 sm:pt-8 px-6 sm:px-12 w-full min-h-screen overflow-hidden">
+    <img src="assets/fotoperritos.jpg" alt="Grupo de Perritos"
+         class="w-full max-w-6xl h-auto object-cover rounded-3xl shadow-lg border-4 border-purple-400 mt-4 sm:mt-6" />
+
+    <p class="text-lg sm:text-xl md:text-2xl font-semibold text-gray-800 mt-4 sm:mt-5">
+      Haz amigos para tu peludo y descubre quién está en el parque.
+    </p>
+    <button class="mt-4 sm:mt-5 px-6 sm:px-8 py-3 bg-black text-white text-lg font-semibold rounded-full shadow-lg hover:bg-purple-500 transition duration-300">
+      Explorar
+    </button>
+  </main>
+</div>
