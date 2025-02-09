@@ -1,16 +1,10 @@
-
-import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './components/login/login.component';
-import { RegisterComponent } from './components/register/register.component';
-import { WelcomeComponent } from './components/welcome/welcome.component';
-import { MapaComponent } from './components/mapa/mapa.component';
+import { Routes } from '@angular/router';
 
 export const routes: Routes = [
-{ path: 'welcome', component: WelcomeComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
-  {path: "map",component: MapaComponent},
-  { path: '**', redirectTo: 'welcome' } 
+    { path: 'welcome', loadComponent: () => import('./components/welcome/welcome.component').then(m => m.WelcomeComponent), },
+ { path: 'login', loadComponent: () => import('./components/login/login.component').then(m => m.LoginComponent), },
+    { path: 'register', loadComponent: () => import('./components/register/register.component').then(m => m.RegisterComponent) },
+    { path: 'map', loadComponent: () => import('./components/mapa/mapa.component').then(m => m.MapaComponent) },
+    { path: '**', redirectTo: 'welcome' }
+
 ];
-
-
