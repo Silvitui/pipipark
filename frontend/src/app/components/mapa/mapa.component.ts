@@ -18,8 +18,8 @@ export class MapaComponent implements AfterViewInit {
     this.map = new mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/mapbox/streets-v11',
-      center: [2.154007, 41.390205], 
-      zoom: 12,
+      center: [2.1763, 41.3879], 
+      zoom: 12.8,
       accessToken: environment.mapboxToken
     });
 
@@ -42,14 +42,18 @@ export class MapaComponent implements AfterViewInit {
   }
 
   addMarker(pipican: Pipican): void {
-    const marker = new mapboxgl.Marker({ color: 'purple' }) 
-      .setLngLat(pipican.coords) 
+    const dogMarkerElement = document.createElement('div');
+    dogMarkerElement.className = 'dog-marker'; 
+    dogMarkerElement.style.backgroundImage = 'url(assets/dog-icon.png)'; 
+    dogMarkerElement.style.width = '32px'; 
+    dogMarkerElement.style.height = '32px';
+    dogMarkerElement.style.backgroundSize = 'contain'; 
+    new mapboxgl.Marker(dogMarkerElement)
+      .setLngLat(pipican.coords)
       .setPopup(
-        new mapboxgl.Popup({ offset: 25 }).setHTML(`
-          <p><strong>Barrio:</strong> ${pipican.barrio}</p>
-          <p><strong>Coordenadas:</strong> ${pipican.coords.join(', ')}</p>
-        `)
-      )
+        new mapboxgl.Popup({ offset: 25 }).setHTML(`<p><strong>Barrio:</strong> ${pipican.barrio}</p>`)
+      ) // offset: 25 es para poner el popup 25 px de distancia para que no tape la ubicación 
       .addTo(this.map);
   }
+  
 }
