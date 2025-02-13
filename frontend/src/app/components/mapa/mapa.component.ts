@@ -1,8 +1,8 @@
 import { Component, AfterViewInit, inject } from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
-import { environment } from '../../../environment';
 import { PipicanService } from '../../services/pipican.service';
 import { Pipican } from '../../interfaces/Pipican';
+import { environment } from '../../../../environment';
 
 
 @Component({

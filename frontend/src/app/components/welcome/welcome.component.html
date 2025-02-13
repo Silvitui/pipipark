@@ -1,60 +1,65 @@
-<div class="bg-yellow-200 min-h-screen w-full">
-  <nav class="relative flex items-center justify-between px-6 lg:px-16 py-4">
+<div class="bg-yellow-200 min-h-screen w-full flex flex-col justify-between">
+  <nav class="flex items-center justify-between px-4 sm:px-6 lg:px-16 py-4 bg-yellow-200">
     <div class="flex-shrink-0">
-      <img src="assets/logo_cropped.png" class="h-[12px] sm:h-[24px] md:h-[20px] lg:h-[28px] xl:h-10 w-auto object-contain mt-5">
+      <img src="assets/logo_cropped.png" 
+           class="h-[16px] sm:h-[24px] md:h-[28px] lg:h-10 w-auto object-contain mt-2" 
+           alt="Logo">
     </div>
-
-    <div class="hidden md:flex absolute left-1/2 top-4 transform -translate-x-1/2 space-x-8 mt-3">
-      <a (click)="goToMap()" href="/map" class="link link-purple">📍Mapa</a>
-      <a href="/calendar" class="link link-purple">📆Calendario</a>
-      <a href="/stats" class="link link-purple">📈Gráficos</a>
+    <div class="hidden md:flex justify-center space-x-8">
+      <a href="/map" class="link link-primary">📍 Mapa</a>
+      <a href="/calendar" class="link link-primary">📆 Eventos</a>
+      <a href="/stats" class="link link-primary">📈 Gráficos</a>
     </div>
-
-    <div class="hidden md:flex absolute top-4 right-6 flex-row gap-2">
+    <div class="hidden md:flex gap-2 flex-col lg:flex-row">
       @if (!authService.isAuthenticated()) {
-        <div class="flex flex-col lg:flex-row gap-2">
-          <button (click)="goToLogin()" class="btn btn-xs sm:btn-sm md:btn-xs lg:btn-xs xl:btn-sm btn-outline bg-purple-300 text-black ">
-            Iniciar sesión
-          </button>
-          <button (click)="goToRegister()" class="btn btn-xs sm:btn-sm md:btn-xs lg:btn-xs xl:btn-sm btn-outline bg-gray-100 text-black">
-            Registrarse
-          </button>
-        </div>
-      }
-      @else {
-        <button (click)="logout()" class="btn btn-sm btn-outline bg-purple-400 text-white">Desconectarse</button>
+        <button (click)="goToLogin()" class="btn btn-xs btn-outline bg-purple-300 text-black">Iniciar sesión</button>
+        <button (click)="goToRegister()" class="btn btn-xs btn-outline bg-gray-100 text-black">Registrarse</button>
+      } @else {
+        <button (click)="logout()" class="btn btn-xs btn-secondary">Desconectarse</button>
       }
     </div>
-    <div class="md:hidden absolute top-4 right-6">
-      <button class="btn btn-sm bg-purple-500 text-white" (click)="toggleMenu()">☰</button>
+    <div class="md:hidden">
+      <button class="btn btn-circle bg-purple-500 text-white" (click)="toggleMenu()">☰</button>
     </div>
   </nav>
-
   @if (isMenuOpen) {
-    <div class="md:hidden absolute top-16 left-0 w-full bg-white shadow-lg py-3 flex flex-col items-center">
-      <a href="/map" class="w-full text-center py-2 hover:bg-gray-200">📍 Mapa</a>
-      <a href="/calendar" class="w-full text-center py-2 hover:bg-gray-200">📆 Calendario</a>
-      <a href="/stats" class="w-full text-center py-2 hover:bg-gray-200">📈 Gráficos</a>
-      
-      <hr class="w-full border-t my-2" />
-
+    <div class="md:hidden bg-yellow-200 shadow-lg py-4">
+      <a href="/map" class="block text-center py-2 hover:bg-gray-100">📍 Mapa</a>
+      <a href="/calendar" class="block text-center py-2 hover:bg-gray-100">📆 Calendario</a>
+      <a href="/stats" class="block text-center py-2 hover:bg-gray-100">📈 Gráficos</a>
+      <hr class="my-4" />
       @if (!authService.isAuthenticated()) {
         <button (click)="goToLogin()" class="btn btn-sm w-11/12 my-2 bg-purple-300 text-black">Iniciar sesión</button>
         <button (click)="goToRegister()" class="btn btn-sm w-11/12 bg-gray-100 text-black">Registrarse</button>
       } @else {
-        <button (click)="logout()" class="btn btn-sm w-11/12 my-2 bg-purple-400 text-white">Desconectarse</button>
+        <button (click)="logout()" class="btn btn-sm w-11/12 my-2 btn-secondary">Desconectarse</button>
       }
     </div>
   }
-  <main class="flex flex-col items-center text-center pt-6 sm:pt-8 px-6 sm:px-12 w-full min-h-screen overflow-hidden">
-    <img src="assets/fotoperritos.jpg" alt="Grupo de Perritos"
-         class="w-full max-w-6xl h-auto object-cover rounded-3xl shadow-lg border-4 border-purple-400 mt-4 sm:mt-6" />
+  <main class="flex flex-col items-center text-center pt-8 px-4 sm:px-6 w-full">
+    <div class="block sm:hidden mb-6">
+      <h1 class="text-gray-800 text-2xl font-bold">¡Conecta a tu perro con nuevos amigos!</h1>
+      <p class="text-gray-600 text-base mt-2">Descubre quién está en el parque y comparte momentos únicos.</p>
+    </div>
 
-    <p class="text-lg sm:text-xl md:text-2xl font-semibold text-gray-800 mt-4 sm:mt-5">
-      Haz amigos para tu peludo y descubre quién está en el parque.
-    </p>
-    <button class="mt-4 sm:mt-5 px-6 sm:px-8 py-3 bg-black text-white text-lg font-semibold rounded-full shadow-lg hover:bg-purple-500 transition duration-300">
-      Explorar
-    </button>
+    <div class="relative w-full max-w-4xl">
+      <img src="assets/fotoperritos.jpg" alt="perritos"
+           class="w-full h-auto object-cover rounded-2xl shadow-lg border-2 border-purple-400" />
+      <div class="hidden sm:flex absolute inset-0 bg-black bg-opacity-30 flex-col items-center justify-center rounded-2xl px-4">
+        <h1 class="text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold">¡Conecta a tu perro con nuevos amigos!</h1>
+        <p class="text-gray-200 text-base sm:text-lg md:text-xl mt-4">Descubre quién está en el parque y comparte momentos únicos.</p>
+        <button class="mt-6 px-6 py-3 btn btn-md rounded-full bg-white text-black hover:bg-purple-500 transition-transform transform hover:scale-105 duration-300">
+          Explorar
+        </button>
+      </div>
+    </div>
   </main>
+  <footer class="bg-gray-800 text-gray-300 py-6 text-center mt-12">
+    <p class="text-sm">© 2025 ConnectaPet. Todos los derechos reservados.</p>
+    <div class="mt-2 space-x-4">
+      <a href="#" class="hover:text-purple-400">Privacidad</a>
+      <a href="#" class="hover:text-purple-400">Términos de uso</a>
+      <a href="#" class="hover:text-purple-400">Contacto</a>
+    </div>
+  </footer>
 </div>
