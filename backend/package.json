@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "seed": "node build/data/seedMongoDB.js",
     "lint": "eslint",
     "build:watch": "npx tsc -w",
     "dev": "nodemon build/server.js",

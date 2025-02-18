@@ -8,3 +8,4 @@ const ParkVisitSchema = new mongoose.Schema({
 
 const ParkVisit = mongoose.model('ParkVisit', ParkVisitSchema);
 export default ParkVisit;
+ 

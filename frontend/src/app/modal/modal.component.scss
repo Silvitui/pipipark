@@ -1,0 +1,13 @@
+/* Estilos para el modal en móviles */
+.modal-box {
+    transition: all 0.3s ease; /* Animación suave */
+  }
+  
+  /* Estilos para el botón de cerrar */
+  .btn {
+    transition: background-color 0.3s ease; /* Animación suave */
+  }
+  
+  .btn:hover {
+    transform: scale(1.05); /* Efecto de escala al pasar el mouse */
+  }
