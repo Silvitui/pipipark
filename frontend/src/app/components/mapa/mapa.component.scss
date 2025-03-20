@@ -1,25 +1,20 @@
-/* Fondo degradado para toda la página */
+
 .gradient-background {
-  background: linear-gradient(to right, #68d391, #4299e1); /* Aproximación de green-400 a blue-500 */
-  min-height: 100vh; /* Ocupa al menos el 100% de la altura de la pantalla */
+  background: linear-gradient(to right, #68d391, #4299e1); 
+  min-height: 100vh; 
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
 }
 
-/* Contenedor principal */
 .container {
   max-width: 1000px;
   margin: 0 auto;
-  flex-grow: 1; /* Ocupa el espacio restante */
+  flex-grow: 1; 
 }
 
-/* Header */
-.header {
-  /* Puedes agregar más estilos personalizados aquí */
-}
 
-/* Estilos para el mapa */
+
 .map-card {
   border: #176133 10px solid;
   height: 450px;
@@ -28,22 +23,11 @@
 
 @media (max-width: 768px) {
   .map-card {
-    width: 100%; /* Que ocupe el ancho completo */
-    height: 300px; /* Ajusta la altura según tu preferencia */
+    width: 100%; 
+    height: 300px; 
   }
 }
 
-/* Panel lateral de búsqueda */
-.sidebar {
-  /* Estilos para el panel lateral */
-}
-
-/* Campo de entrada */
-.input {
-  /* Estilos para el input */
-}
-
-/* Iconos */
 .icon {
   width: 32px;
   height: 32px;
@@ -51,27 +35,27 @@
   background-repeat: no-repeat;
 }
 
-/* Placeholder del input */
+
 .input::placeholder {
-  opacity: 1; /* Asegura que el placeholder sea visible */
-  color: #999; /* Cambia el color si es necesario */
-  font-size: 0.9rem; /* Ajusta el tamaño de la fuente */
+  opacity: 1; 
+  color: #999; 
+  font-size: 0.9rem; 
 }
 
-/* Modal */
+
 .modal-mobile {
-  width: 90%; /* Ocupa el 90% del ancho en móviles */
-  max-width: 300px; /* Limita el ancho máximo en móviles */
-  margin: 1rem auto; /* Centra el modal */
+  width: 90%; 
+  max-width: 300px; 
+  margin: 1rem auto; 
   padding: 1rem;
   border-radius: 0.5rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   background-color: white;
-  z-index: 1000; /* Asegura que el modal esté por encima de otros elementos */
+  z-index: 1000; 
 }
 
 @media (min-width: 768px) {
   .modal-mobile {
-    max-width: 400px; /* Ancho máximo en pantallas grandes */
+    max-width: 400px; 
   }
 }

@@ -1,65 +1,38 @@
-<div class="bg-yellow-200 min-h-screen w-full flex flex-col justify-between">
-  <nav class="flex items-center justify-between px-4 sm:px-6 lg:px-16 py-4 bg-yellow-200">
-    <div class="flex-shrink-0">
-      <img src="assets/logo_cropped.png" 
-           class="h-[16px] sm:h-[24px] md:h-[28px] lg:h-10 w-auto object-contain mt-2" 
-           alt="Logo">
-    </div>
-    <div class="hidden md:flex justify-center space-x-8">
-      <a href="/map" class="link link-primary">📍 Mapa</a>
-      <a href="/calendar" class="link link-primary">📆 Eventos</a>
-      <a href="/stats" class="link link-primary">📈 Gráficos</a>
-    </div>
-    <div class="hidden md:flex gap-2 flex-col lg:flex-row">
-      @if (!authService.isAuthenticated()) {
-        <button (click)="goToLogin()" class="btn btn-xs btn-outline bg-purple-300 text-black">Iniciar sesión</button>
-        <button (click)="goToRegister()" class="btn btn-xs btn-outline bg-gray-100 text-black">Registrarse</button>
-      } @else {
-        <button (click)="logout()" class="btn btn-xs btn-secondary">Desconectarse</button>
-      }
-    </div>
-    <div class="md:hidden">
-      <button class="btn btn-circle bg-purple-500 text-white" (click)="toggleMenu()">☰</button>
-    </div>
-  </nav>
-  @if (isMenuOpen) {
-    <div class="md:hidden bg-yellow-200 shadow-lg py-4">
-      <a href="/map" class="block text-center py-2 hover:bg-gray-100">📍 Mapa</a>
-      <a href="/calendar" class="block text-center py-2 hover:bg-gray-100">📆 Calendario</a>
-      <a href="/stats" class="block text-center py-2 hover:bg-gray-100">📈 Gráficos</a>
-      <hr class="my-4" />
-      @if (!authService.isAuthenticated()) {
-        <button (click)="goToLogin()" class="btn btn-sm w-11/12 my-2 bg-purple-300 text-black">Iniciar sesión</button>
-        <button (click)="goToRegister()" class="btn btn-sm w-11/12 bg-gray-100 text-black">Registrarse</button>
-      } @else {
-        <button (click)="logout()" class="btn btn-sm w-11/12 my-2 btn-secondary">Desconectarse</button>
-      }
-    </div>
-  }
-  <main class="flex flex-col items-center text-center pt-8 px-4 sm:px-6 w-full">
-    <div class="block sm:hidden mb-6">
-      <h1 class="text-gray-800 text-2xl font-bold">¡Conecta a tu perro con nuevos amigos!</h1>
-      <p class="text-gray-600 text-base mt-2">Descubre quién está en el parque y comparte momentos únicos.</p>
-    </div>
-
-    <div class="relative w-full max-w-4xl">
-      <img src="assets/fotoperritos.jpg" alt="perritos"
-           class="w-full h-auto object-cover rounded-2xl shadow-lg border-2 border-purple-400" />
-      <div class="hidden sm:flex absolute inset-0 bg-black bg-opacity-30 flex-col items-center justify-center rounded-2xl px-4">
-        <h1 class="text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold">¡Conecta a tu perro con nuevos amigos!</h1>
-        <p class="text-gray-200 text-base sm:text-lg md:text-xl mt-4">Descubre quién está en el parque y comparte momentos únicos.</p>
-        <button class="mt-6 px-6 py-3 btn btn-md rounded-full bg-white text-black hover:bg-purple-500 transition-transform transform hover:scale-105 duration-300">
-          Explorar
-        </button>
+<div class="min-h-screen w-full flex lg:flex-row">
+  <aside class="hidden lg:flex flex-col w-64 bg-gray-900 text-gray-200 py-6 px-4 space-y-4 h-screen sticky top-0">
+    <img src="assets/connectapetLogo.png">
+    <nav class="mt-6 flex-grow">
+      <a (click)="goToMap()" class="block py-2 px-4 rounded-lg hover:bg-purple-600 cursor-pointer">📍 Mapa</a>
+      <a (click)="goToRegister()" class="block py-2 px-4 rounded-lg hover:bg-purple-600 cursor-pointer">📆 Registro</a>
+      <a (click)="goToLogin()" class="block py-2 px-4 rounded-lg hover:bg-purple-600 cursor-pointer">🔑 Iniciar sesión</a>
+      <a (click)="logout()" *ngIf="authService.isAuthenticated()" class="block py-2 px-4 rounded-lg hover:bg-red-600 cursor-pointer">🚪 Cerrar sesión</a>
+    </nav>
+  </aside>
+  <div class="relative flex flex-col lg:flex-row items-center justify-between flex-grow px-6 sm:px-10 lg:px-16 py-8">
+    <div class="lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left relative z-10">
+      <h1 class="text-gray-800 text-3xl sm:text-4xl md:text-5xl font-bold mt-4">¡Conecta a tu perro con nuevos amigos!</h1>
+      <p class="text-gray-600 text-lg mt-2 max-w-md">Descubre quién está en el parque y comparte momentos únicos.</p>
+      <button class="mt-6 px-6 py-3 btn btn-md rounded-full bg-purple-500 text-white hover:bg-purple-600 transition-transform transform hover:scale-105 duration-300" (click)="goToMap()">
+        Explorar
+      </button>
+     
+      <div class="mt-6 flex gap-4">
+        <button class="btn btn-outline bg-purple-300 text-black px-6 py-2" (click)="goToLogin()">Iniciar sesión</button>
+        <button class="btn btn-outline bg-gray-100 text-black px-6 py-2" (click)="goToRegister()">Registrarse</button>
       </div>
     </div>
-  </main>
-  <footer class="bg-gray-800 text-gray-300 py-6 text-center mt-12">
-    <p class="text-sm">© 2025 ConnectaPet. Todos los derechos reservados.</p>
-    <div class="mt-2 space-x-4">
-      <a href="#" class="hover:text-purple-400">Privacidad</a>
-      <a href="#" class="hover:text-purple-400">Términos de uso</a>
-      <a href="#" class="hover:text-purple-400">Contacto</a>
+    <div class="absolute inset-0 lg:relative lg:w-1/2 flex justify-center lg:justify-end h-full">
+      <img src="assets/jagerPeque_no_bg.png" alt="Jager" class="w-full h-full object-cover lg:absolute inset-0">
     </div>
-  </footer>
+  </div>
 </div>
+
+
+<footer class="bg-gray-800 text-gray-300 py-6 text-center w-full relative z-10">
+  <p class="text-sm">© 2025 ConnectaPet. Todos los derechos reservados.</p>
+  <div class="mt-2 space-x-4">
+    <a href="#" class="hover:text-purple-400">Privacidad</a>
+    <a href="#" class="hover:text-purple-400">Términos de uso</a>
+    <a href="#" class="hover:text-purple-400">Contacto</a>
+  </div>
+</footer>

@@ -12,16 +12,12 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './mapa.component.html',
   styleUrls: ['./mapa.component.scss'],
   imports: [CommonModule, FormsModule, ModalComponent],
-  standalone: true // Si estás usando Angular 17+ con standalone components
+  standalone: true 
 })
 export class MapaComponent implements AfterViewInit {
   map!: mapboxgl.Map;
   pipicanService = inject(PipicanService);
-
-  // Signal para manejar el estado del modal
   selectedPipican = signal<{ name: string; barrio: string } | null>(null);
-
-  // Variables para el buscador
   searchTerm: string = '';
   allPipicans: Pipican[] = [];
 
@@ -64,7 +60,7 @@ export class MapaComponent implements AfterViewInit {
     dogMarkerElement.style.width = '32px';
     dogMarkerElement.style.height = '32px';
     dogMarkerElement.style.backgroundSize = 'contain';
-    dogMarkerElement.style.cursor = 'pointer'; // Cambiado a 'pointer' para indicar que es clickeable
+    dogMarkerElement.style.cursor = 'pointer'; 
 
     new mapboxgl.Marker(dogMarkerElement)
       .setLngLat(pipican.coords)
@@ -80,28 +76,20 @@ export class MapaComponent implements AfterViewInit {
     }
   
     const searchTermLower = this.searchTerm.toLowerCase();
-  
-    // Filtra los Pipican que coinciden con el término de búsqueda
     const filtered = this.allPipicans.filter((pipican) =>
       (pipican.name ?? '').toLowerCase().includes(searchTermLower) ||
       (pipican.barrio ?? '').toLowerCase().includes(searchTermLower)
     );
-  
-    // Si hay menos de 5 resultados, devuelve todos
     if (filtered.length <= 5) {
       return filtered;
     }
-  
-    // Devuelve los 5 primeros
+
     const firstFive = filtered.slice(0, 5);
   
-    // Encuentra el que más se parece al término de búsqueda
     const bestMatch = filtered.find((pipican) =>
       (pipican.name ?? '').toLowerCase() === searchTermLower ||
       (pipican.barrio ?? '').toLowerCase() === searchTermLower
     );
-  
-    // Si hay un mejor match y no está en los primeros 5, lo añade
     if (bestMatch && !firstFive.includes(bestMatch)) {
       firstFive.push(bestMatch);
     }

@@ -19,8 +19,6 @@ export class PipicanService {
   setSelectedPipican(pipican: any) {
     this.selectedPipican.set(pipican);
   }
-
-  // Método para limpiar el pipican seleccionado
   clearSelectedPipican() {
     this.selectedPipican.set(null);
   }
