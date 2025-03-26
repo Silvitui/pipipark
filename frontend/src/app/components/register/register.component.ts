@@ -3,8 +3,6 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
-import { fadeInOut } from '../../animations/animations';
-
 
 @Component({
   selector: 'app-register',
@@ -12,13 +10,15 @@ import { fadeInOut } from '../../animations/animations';
   imports: [ReactiveFormsModule, CommonModule, FormsModule],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
-  animations: [fadeInOut]
 })
 export class RegisterComponent {
-   authService = inject(AuthService);
+  authService = inject(AuthService);
   router = inject(Router);
   currentStep = signal<number>(0);
   answers = signal<{ [key: string]: any }>({});
+
+  // 👇 Variable para controlar las clases de animación
+  animationClass = signal<string>('');
 
   questions = [
     { question: '¿Cómo se llama tu perro?', field: 'name', type: 'text' },
@@ -39,19 +39,25 @@ export class RegisterComponent {
   ];
 
   checkAuthStatus(): void {
-    this.authService.checkAuthStatus(); 
+    this.authService.checkAuthStatus();
   }
 
   nextStep(): void {
     if (this.currentStep() < this.questions.length - 1) {
+      this.animationClass.set('animate-slide-left'); // 👈 Animación entrada desde la derecha
       this.currentStep.set(this.currentStep() + 1);
     }
   }
 
   prevStep(): void {
     if (this.currentStep() > 0) {
+      this.animationClass.set('animate-slide-right'); // 👈 Animación entrada desde la izquierda
       this.currentStep.set(this.currentStep() - 1);
     }
+  }
+
+  onAnimationEnd(): void {
+    this.animationClass.set('');
   }
 
   submitForm(): void {
@@ -72,7 +78,7 @@ export class RegisterComponent {
 
     this.authService.registerUser(payload).subscribe({
       next: () => {
-        this.router.navigate(['/login']);  
+        this.router.navigate(['/login']);
       },
       error: (err) => console.error('Error en el registro:', err)
     });
@@ -96,5 +102,9 @@ export class RegisterComponent {
 
   goToHome(): void {
     this.router.navigate(['/']);
+    
+  }
+  goToLogin(): void {
+    this.router.navigate(['/login']);
   }
 }

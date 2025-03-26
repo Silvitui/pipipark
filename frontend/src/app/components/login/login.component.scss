@@ -1,0 +1,16 @@
+.login-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+  }
+  
+  .background-image {
+    background-image: url('/assets/perritos-login.webp');
+    background-size: cover;
+    background-position: center; 
+    background-repeat: no-repeat;
+    opacity: 0.8;
+
+  }
+  

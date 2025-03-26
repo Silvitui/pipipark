@@ -7,7 +7,8 @@ import { MapaComponent } from "./components/mapa/mapa.component";
   selector: 'app-root',
   imports: [RouterOutlet],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
+  
 })
 export class AppComponent {
   title = 'frontend';
