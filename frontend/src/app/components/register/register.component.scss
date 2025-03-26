@@ -1,60 +1,14 @@
-// 📌 Estilos para el contenedor principal (fondo amarillo)
-.register-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh; // Para que ocupe toda la pantalla
-    // Color dorado
+@keyframes fadeInSmooth {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
   }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
-
-  // 📌 Estilos para la card (formulario)
-  .register-card {
-    background-color: #f8f8f8; // Mantiene el fondo blanco
-    padding: 2rem;
-    border-radius: 2.5rem; // Bordes redondeados// Sombra suave
-    width: 100%;
-    max-width: 500px;
-    text-align: center; // Centra los elementos dentro de la card
-  }
-  
-  // 📌 Imagen de la mascota dentro del formulario
-  .register-image {
-    width: 170px;
-    height: auto;
-
-  }
-  
-  // 📌 Estilos para los inputs
-  .register-input {
-    width: 100%;
-    padding: 12px;
-    border: 2px solid #ccc;
-    border-radius: 8px;
-    margin-bottom: 1rem;
-    font-size: 16px;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-    
-    &:focus {
-      border-color: #ff9f00;
-      outline: none;
-      box-shadow: 0 0 10px rgba(255, 159, 0, 0.5);
-    }
-  }
-  
-  // 📌 Estilos para los botones
-  .register-button {
-    width: 100%;
-    padding: 12px;
-    font-size: 18px;
-    font-weight: bold;
-    border-radius: 8px;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-    
-    &:hover {
-      transform: scale(1.05);
-    }
-  }
-
+.animate-question {
+  animation: fadeInSmooth 0.4s ease-out both;
+}

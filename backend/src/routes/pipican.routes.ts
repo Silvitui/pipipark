@@ -1,11 +1,11 @@
 import express from 'express';
 import { getPipicans } from '../controllers/pipican.controller';
 
-const router = express.Router();
+const pipicanRouter = express.Router();
 
-router.get('/', getPipicans);
+pipicanRouter.get('/', getPipicans);
 
-export default router;
+export default pipicanRouter;
 
 
 //utf8 es (Unicode transformation format 8 bits) es una forma de codificar texto para que pueda manejar cualquier carácter del mundo. 

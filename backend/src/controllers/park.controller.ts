@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { ParkVisitType } from '../interfaces/parkVisit.interface';
 import ParkVisit from '../models/Park';
+import { AuthenticatedRequest } from '../utils/types/types';
 
 
 export const getDogsInPark = async (req: Request, res: Response) => {
@@ -25,52 +26,56 @@ export const getDogsInPark = async (req: Request, res: Response) => {
 };
 
 export const checkInPark = async (req: Request, res: Response) => {
+    const authReq = req as AuthenticatedRequest;
     try {
-        const { parkId, userId, dogIds } = req.body;
-        if (!parkId || !userId || !dogIds || !dogIds.length) {
-            res.status(400).json({ error: "Todos los campos son obligatorios." });
-            return 
-        }
-
-        const newVisit = new ParkVisit({
-            park: parkId,
-            user: userId,
-            dogs: dogIds
-        });
-
-        await newVisit.save();
-
-        res.status(201).json({ message: "Check-in realizado con éxito", visit: newVisit });
-        return
+      const { parkId, dogIds } = authReq.body;
+      const userId = authReq.user._id;
+  
+      if (!parkId || !dogIds || !dogIds.length) {
+        res.status(400).json({ error: "Todos los campos son obligatorios." });
+        return;
+      }
+  
+      const newVisit = new ParkVisit({
+        park: parkId,
+        user: userId,
+        dogs: dogIds
+      });
+  
+      await newVisit.save();
+  
+      res.status(201).json({ message: "Check-in realizado con éxito", visit: newVisit });
+      return;
     } catch (error) {
-        console.error("Error en checkInPark:", error);
-        res.status(500).json({ message: "Error al hacer check-in en el pipicán" });
-        return 
+      console.error("Error en checkInPark:", error);
+      res.status(500).json({ message: "Error al hacer check-in en el pipicán" });
+      return;
     }
-};
-
-
-export const checkOutPark = async (req: Request, res: Response) => {
+  };
+  
+  export const checkOutPark = async (req: Request, res: Response) => {
+    const authReq = req as AuthenticatedRequest;
     try {
-        const { parkId, userId } = req.body;
-
-        if (!parkId || !userId) {
-            res.status(400).json({ error: "Se requieren parkId y userId." });
-            return
-        }
-
-        const deletedVisit = await ParkVisit.findOneAndDelete({ park: parkId, user: userId });
-
-        if (!deletedVisit) {
-            res.status(404).json({ error: "No se encontró un registro para este usuario en este pipicán." });
-            return
-        }
-
-        res.status(200).json({ message: "Check-out realizado con éxito" });
-        return 
+      const { parkId } = authReq.body;
+      const userId = authReq.user._id;
+  
+      if (!parkId) {
+        res.status(400).json({ error: "Se requiere parkId." });
+        return;
+      }
+  
+      const deletedVisit = await ParkVisit.findOneAndDelete({ park: parkId, user: userId });
+  
+      if (!deletedVisit) {
+        res.status(404).json({ error: "No se encontró un registro para este usuario en este pipicán." });
+        return;
+      }
+  
+      res.status(200).json({ message: "Check-out realizado con éxito" });
+      return;
     } catch (error) {
-        console.error("Error en checkOutPark:", error);
-        res.status(500).json({ message: "Error al hacer check-out del pipicán" });
-        return
+      console.error("Error en checkOutPark:", error);
+      res.status(500).json({ message: "Error al hacer check-out del pipicán" });
+      return;
     }
-};
+  };

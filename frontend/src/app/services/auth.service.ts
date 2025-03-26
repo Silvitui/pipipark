@@ -11,7 +11,7 @@ export class AuthService {
   router = inject(Router);
    apiUrl = 'http://localhost:3000/api/auth'; 
 
-  public isAuthenticated = signal<boolean>(false);
+ isAuthenticated = signal<boolean>(false);
  ngOnInit() {
     this.checkAuthStatus();  
   }

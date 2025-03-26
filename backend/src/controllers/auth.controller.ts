@@ -3,47 +3,62 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import User from '../models/User';
 import Dog from '../models/Dog';
+import { AuthenticatedRequest } from '../utils/types/types';
 
 export const registerUser = async (req: Request, res: Response) => {
     try {
-        const { userName, email, password, dog} = req.body;
-        if (!userName || !email || !password || !dog) {
-            res.status(400).json({ error: "Todos los campos son obligatorios" });
-            return 
+      const { userName, email, password, dog } = req.body;
+  
+      if (!userName || !email || !password || !dog) {
+        res.status(400).json({ error: "Todos los campos son obligatorios" });
+        return;
+      }
+  
+      const existingUser = await User.findOne({ email });
+      if (existingUser) {
+        res.status(400).json({ error: "El email ya está registrado. Usa otro." });
+        return;
+      }
+  
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const newUser = new User({ userName, email, password: hashedPassword });
+  
+      const newDog = new Dog({
+        name: dog.name,
+        gender: dog.gender,
+        breed: dog.breed,
+        age: dog.age,
+        size: dog.size,
+        personality: dog.personality,
+        owner: newUser._id
+      });
+  
+      const savedDog = await newDog.save();
+      newUser.dogs = [savedDog._id];
+      await newUser.save();
+  
+      // Generar token y enviar cookie
+      const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET!, { expiresIn: '1d' });
+      res.cookie('token', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production"
+      });
+  
+      res.status(201).json({
+        message: "Usuario y perro registrados correctamente",
+        user: {
+          _id: newUser._id,
+          userName: newUser.userName,
+          dogs: [savedDog]
         }
-        const existingUser = await User.findOne({ email });
-        if (existingUser) {
-            res.status(400).json({ error: "El email ya está registrado. Usa otro." });
-            return 
-        }
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = new User({ userName, email, password: hashedPassword });
-        const newDog = new Dog({
-            name: dog.name,
-            gender: dog.gender,
-            breed: dog.breed,
-            age: dog.age,
-            size: dog.size,
-            personality: dog.personality,
-            owner: newUser._id
-        });
-        const savedDog = await newDog.save();
-        newUser.dogs = [savedDog._id];
-        newUser.dogs = [savedDog._id];
-        await newUser.save();
-
-        res.status(201).json({ 
-            message: "Usuario y perros registrados correctamente", 
-            user: newUser, 
-            dogs: [savedDog] 
-        });
-        return 
+      });
+      return;
     } catch (error) {
-        console.error("Error en registerUser:", error);
-        res.status(500).json({ message: "Error al registrar usuario y perros" });
-        return 
+      console.error("Error en registerUser:", error);
+      res.status(500).json({ message: "Error al registrar usuario y perro" });
+      return;
     }
-};
+  };
 
 
 
@@ -83,6 +98,17 @@ export const loginUser = async (req: Request, res: Response) => {
         res.status(500).json({ message: "Error al iniciar sesión" });
         return 
     }
+};
+export const checkAuth = (req: Request, res: Response) => {
+  const authReq = req as AuthenticatedRequest;
+
+  if (!authReq.user) {
+    res.status(401).json({ authenticated: false, error: 'Usuario no autenticado' });
+    return;
+  }
+
+  res.status(200).json({ authenticated: true, user: authReq.user });
+  return;
 };
 
 export const logoutUser = (_req: Request, res: Response) => {

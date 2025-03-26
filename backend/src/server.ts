@@ -12,7 +12,7 @@ import usersRouter from './routes/user.routes';
 import authMiddleware from './middlewares/authMiddlewares';
 import parksRouter from './routes/park.routes';
 import statsRouter from './routes/statistics.routes';
-import pipicanRoutes from './routes/pipican.routes';
+import pipicanRouter from './routes/pipican.routes';
 
 const app = express();
 const PORT = +(process.env.PORT ?? 3000);
@@ -28,12 +28,12 @@ app.use("/api/dogs",authMiddleware, dogsRouter);
 app.use("/api/users",authMiddleware, usersRouter)
 app.use("/api/parks",authMiddleware,parksRouter)
 app.use("/api/stats",authMiddleware,statsRouter)
-app.use('/api/pipicans', pipicanRoutes);
+app.use('/api/pipicans', pipicanRouter);
 
 
 
 app.get('/', (_req: Request, res: Response) => {
-    res.send('🐶 Bienvenido a PIPIPARK! 🐾🎈🌸🥰');
+    res.send('🐶 Bienvenido a CONNECTAPET! 🐾🎈🌸🥰');
 });
 
 app.listen(PORT, () => {

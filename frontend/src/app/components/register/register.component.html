@@ -1,8 +1,6 @@
-<div class="register-container bg-yellow-200">
-  <div class="register-card shadow-2xl ring-2 ring-gray-300 rounded-lg p-6">
-    <img src="assets/connectapet2.png" 
-         alt="Perrito"
-         class="register-image">
+<div class="flex justify-center items-center min-h-screen bg-gradient-to-br from-gray-100 via-purple-50 to-gray-200 px-4 sm:px-6">
+  <div class="relative w-full max-w-lg bg-white p-8 rounded-xl shadow-xl border border-gray-200">
+    
     <button (click)="goToHome()"
             class="btn btn-circle btn-outline absolute top-4 right-4 hover:bg-purple-500 hover:text-white transition">
       <svg xmlns="http://www.w3.org/2000/svg"
@@ -17,77 +15,85 @@
       </svg>
     </button>
 
+  
+    <div class="flex justify-center mb-6">
+      <img src="assets/connectapet2.png" alt="ConnectaPet" class="w-24 h-24 rounded-full shadow border border-purple-300" />
+    </div>
+
     @if (authService.isAuthenticated()) {
-      <h2 class="text-4xl font-bold text-center text-gray-900 mb-8">
-        🎉 ¡Bienvenido, amigo perruno! 🐾🐕
+      <h2 class="text-2xl font-bold text-center text-purple-700 mb-4">
+        🎉 ¡Bienvenido, amigo perruno! 🐶
       </h2>
     }
-    <h2 class="text-3xl font-bold text-center text-gray-900 mb-6">
+    <h2 class="text-xl sm:text-2xl font-semibold text-center text-gray-800 mb-4">
       {{ questions[currentStep()].question }}
     </h2>
-    @if (questions[currentStep()].type === 'text' || questions[currentStep()].type === 'email' || questions[currentStep()].type === 'password') {
-      <input type="{{ questions[currentStep()].type }}" 
-             [(ngModel)]="answers()[questions[currentStep()].field]" 
-             class="register-input"
-             placeholder="Escribe aquí..."
-             (keyup.enter)="nextStep()">
+
+
+    @if (['text', 'email', 'password'].includes(questions[currentStep()].type)) {
+      <input 
+        type="{{ questions[currentStep()].type }}" 
+        [(ngModel)]="answers()[questions[currentStep()].field]" 
+        class="w-full input input-bordered px-4 py-3 mb-4 shadow-sm rounded-md"
+        placeholder="Escribe aquí..."
+        (keyup.enter)="nextStep()" />
     }
 
- 
     @if (questions[currentStep()].type === 'number') {
-      <input type="number"
-             [(ngModel)]="answers()[questions[currentStep()].field]"
-             class="register-input"
-             placeholder="Introduce la edad en años"
-             min="0"
-             (keyup.enter)="nextStep()">
+      <input 
+        type="number"
+        [(ngModel)]="answers()[questions[currentStep()].field]"
+        class="w-full input input-bordered px-4 py-3 mb-4 shadow-sm rounded-md"
+        placeholder="Introduce la edad"
+        min="0"
+        (keyup.enter)="nextStep()" />
     }
 
- 
     @if (questions[currentStep()].type === 'size') {
-      <input type="text"
-             [(ngModel)]="answers()[questions[currentStep()].field]"
-             class="register-input"
-             placeholder="Pequeño, mediano, grande..."
-             (keyup.enter)="nextStep()">
+      <input 
+        type="text"
+        [(ngModel)]="answers()[questions[currentStep()].field]"
+        class="w-full input input-bordered px-4 py-3 mb-4 shadow-sm rounded-md"
+        placeholder="Pequeño, mediano, grande..."
+        (keyup.enter)="nextStep()" />
     }
 
-  
     @if (questions[currentStep()].type === 'multi-select') {
-      <div class="grid grid-cols-2 gap-4">
+      <div class="grid grid-cols-2 gap-3 mb-4">
         @for (option of questions[currentStep()].options; track option) {
-          <label class="flex items-center bg-gray-300 px-4 py-3 rounded-lg cursor-pointer shadow-md hover:bg-gray-400 transition">
-            <input type="checkbox" 
-                   (change)="addPersonality(option)" 
-                   [checked]="answers()['personality']?.includes(option)" 
-                   class="checkbox">
-            <span class="ml-2 text-gray-900 font-semibold">{{ option }}</span>
+          <label class="flex items-center bg-purple-100 hover:bg-purple-200 text-purple-900 font-medium px-4 py-2 rounded-md cursor-pointer transition">
+            <input 
+              type="checkbox" 
+              (change)="addPersonality(option)" 
+              [checked]="answers()['personality']?.includes(option)"
+              class="checkbox checkbox-sm checkbox-primary" />
+            <span class="ml-2">{{ option }}</span>
           </label>
         }
       </div>
     }
 
-   
     @if (questions[currentStep()].type === 'file') {
-      <label for="file-upload" class="file-label">
+      <label for="file-upload" class="block w-full text-center text-purple-600 border-2 border-dashed border-purple-300 py-4 rounded-lg cursor-pointer hover:bg-purple-50 mb-4">
         📷 Haz clic aquí para subir una foto
       </label>
-      <input type="file" id="file-upload" (change)="handleFileInput($event)" class="hidden">
+      <input type="file" id="file-upload" (change)="handleFileInput($event)" class="hidden" />
     }
+
+ 
     <div class="flex justify-between mt-6 space-x-4">
       @if (currentStep() > 0) {
-        <button class="btn bg-purple-600 text-white text-sm rounded-full shadow-md hover:bg-purple-900 transition mt-2"
-                (click)="prevStep()">Atrás</button>
+        <button class="btn bg-white border border-purple-400 text-purple-600 hover:bg-purple-100 transition text-sm"
+                (click)="prevStep()">← Atrás</button>
       }
       @if (currentStep() < questions.length - 1) {
-        <button class="btn bg-purple-600 text-white text-sm rounded-full shadow-md hover:bg-purple-700 transition mt-2"
-                (click)="nextStep()">Siguiente</button>
+        <button class="btn bg-purple-500 text-white hover:bg-purple-600 transition text-sm"
+                (click)="nextStep()">Siguiente →</button>
       }
       @if (currentStep() === questions.length - 1) {
-        <button class="btn bg-purple-700 text-white text-sm rounded-full shadow-md hover:bg-purple-800 transition"
-                (click)="submitForm()">Finalizar</button>
+        <button class="btn bg-purple-700 text-white hover:bg-purple-800 transition text-sm"
+                (click)="submitForm()">✨ Finalizar</button>
       }
     </div>
-
   </div>
 </div>

@@ -1,17 +1,20 @@
 import { Component, AfterViewInit, inject, signal, effect } from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
 import { PipicanService } from '../../services/pipican.service';
-import { Pipican } from '../../interfaces/Pipican';
+import { Pipican } from '../../interfaces/pipican';
 import { environment } from '../../../environment';
 import { ModalComponent } from "../../modal/modal.component";
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { SidebarComponent } from "../sidebar/sidebar.component";
+import { FooterComponent } from "../footer/footer.component";
+import { MobileSidebarComponent } from "../mobile-sidebar/mobile-sidebar.component";
 
 @Component({
   selector: 'app-mapa',
   templateUrl: './mapa.component.html',
   styleUrls: ['./mapa.component.scss'],
-  imports: [CommonModule, FormsModule, ModalComponent],
+  imports: [CommonModule, FormsModule, ModalComponent, SidebarComponent, FooterComponent],
   standalone: true 
 })
 export class MapaComponent implements AfterViewInit {

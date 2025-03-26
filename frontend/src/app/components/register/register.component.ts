@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
+import { fadeInOut } from '../../animations/animations';
+
 
 @Component({
   selector: 'app-register',
@@ -10,6 +12,7 @@ import { AuthService } from '../../services/auth.service';
   imports: [ReactiveFormsModule, CommonModule, FormsModule],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
+  animations: [fadeInOut]
 })
 export class RegisterComponent {
    authService = inject(AuthService);
@@ -36,7 +39,7 @@ export class RegisterComponent {
   ];
 
   checkAuthStatus(): void {
-    this.authService.checkAuthStatus();  // Actualiza el estado de autenticación en el servicio
+    this.authService.checkAuthStatus(); 
   }
 
   nextStep(): void {

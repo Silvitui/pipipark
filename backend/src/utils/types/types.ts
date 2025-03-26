@@ -1,8 +1,13 @@
+// utils/types/types.ts
 import { Request } from "express";
-import jwt from "jsonwebtoken";
+import { JwtPayload } from "jsonwebtoken";
+
+export interface JwtUserPayload extends JwtPayload {
+  id: string;
+}
 
 export interface AuthenticatedRequest extends Request {
-    user?: jwt.JwtPayload;
+  user: JwtUserPayload;
 }
 
 // AuthenticatedRequest es un tipo personalizado de typescript que extiende Request para incluir información del usuario autenticado.

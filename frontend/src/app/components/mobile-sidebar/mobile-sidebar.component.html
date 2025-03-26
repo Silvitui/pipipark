@@ -1,0 +1,31 @@
+<!-- Botón pata hamburguesa -->
+<button 
+  class="fixed top-3 right-4 transition-transform duration-300 hover:scale-110 z-[9999] rounded-full shadow-lg border-2 border-gray-300 w-14 h-14 flex items-center justify-center lg:hidden"
+  (click)="toggleMenu()"
+  [attr.aria-label]="showMenu ? 'Cerrar menú' : 'Abrir menú'"
+  [ngClass]="{
+    'rotate-180 bg-purple-100 border-purple-300': showMenu,
+    'rotate-0 bg-white': !showMenu
+  }"
+>
+  <img 
+    src="assets/paaaw.svg" 
+    alt="Pata menú" 
+    class="w-16 h-16 pointer-events-none"
+  />
+</button>
+<aside 
+  *ngIf="showMenu"
+  class="lg:hidden fixed top-0 left-0 w-full h-screen bg-gray-900 text-white py-6 px-4 space-y-4 shadow-lg z-50 transition-all duration-300"
+>
+ 
+  <img src="assets/connectapetLogo.png" class="w-48 mx-auto mt-12 mb-6" />
+
+
+  <nav class="text-center space-y-4 text-lg font-semibold">
+    <a (click)="navigate('/map')" class="block py-3 px-4 rounded-xl hover:bg-purple-600 cursor-pointer transition-colors duration-200">📍 Mapa</a>
+    <a (click)="navigate('/register')" class="block py-3 px-4 rounded-xl hover:bg-purple-600 cursor-pointer transition-colors duration-200">📆 Registro</a>
+    <a (click)="navigate('/login')" class="block py-3 px-4 rounded-xl hover:bg-purple-600 cursor-pointer transition-colors duration-200">🔑 Iniciar sesión</a>
+    <a *ngIf="authService.isAuthenticated()" (click)="logout()" class="block py-3 px-4 rounded-xl hover:bg-red-600 cursor-pointer transition-colors duration-200">🚪 Cerrar sesión</a>
+  </nav>
+</aside>

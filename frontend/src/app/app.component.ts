@@ -11,4 +11,8 @@ import { MapaComponent } from "./components/mapa/mapa.component";
 })
 export class AppComponent {
   title = 'frontend';
+  testClick() {
+    console.log('¡Pata clicada!');
+  }
+  
 }
