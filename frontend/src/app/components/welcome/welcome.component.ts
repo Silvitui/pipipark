@@ -12,7 +12,7 @@ import { FooterComponent } from '../footer/footer.component';
   selector: 'app-welcome',
   templateUrl: './welcome.component.html',
   styleUrls: ['./welcome.component.scss'],
-  imports: [CommonModule, SidebarComponent, MobileSidebarComponent, FooterComponent]
+  imports: [CommonModule, FooterComponent, SidebarComponent, MobileSidebarComponent]
 })
 export class WelcomeComponent implements OnInit {
   router = inject(Router);

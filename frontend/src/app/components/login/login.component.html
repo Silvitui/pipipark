@@ -1,8 +1,8 @@
 <div class="login-wrapper relative min-h-screen w-full">
   <div class="background-image absolute inset-0 z-0"></div>
   <div class="flex justify-center items-center min-h-screen px-4 sm:px-6 relative z-10">
-    <div class="card w-[95%] max-w-lg bg-white bg-opacity-40 shadow-2xl p-8 rounded-2xl border border-purple-100">
-
+    <div class="card w-full max-w-sm bg-white bg-opacity-40 shadow-2xl p-4 sm:p-6 rounded-2xl border border-purple-100">
+      
       <button 
         (click)="goToHome()"
         class="btn btn-circle btn-outline absolute top-4 right-4 hover:bg-purple-500 hover:text-white transition"
@@ -18,37 +18,34 @@
                 d="M6 18L18 6M6 6l12 12" />
         </svg>
       </button>
-
+      
       <div class="flex justify-center">
-        <img src="assets/perrito.png" 
+        <img src="assets/logoperrito.png" 
              alt="Perrito"
-             class="w-32 h-32 mb-4 rounded-full shadow-md" />
+             class="w-24 h-24 mb-4 rounded-full shadow-md" />
       </div>
-
-      <h2 class="text-3xl font-bold text-center text-purple-700 mb-6">
-        Inicia sesión en Connectapet 
-      </h2>
-
-
-      <label class="block text-gray-700 font-semibold mb-2">Correo Electrónico</label>
+      
+    
+      
+      <label class="block text-gray-700 font-semibold mb-1 text-sm">Correo Electrónico</label>
       <input type="email"
              [(ngModel)]="email"
-             class="input input-bordered w-full px-4 py-3 text-gray-900 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-400 mb-4"
+             class="input input-bordered w-full px-3 py-2 text-sm text-gray-900 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-400 mb-3"
              placeholder="Introduce tu correo" />
-      <label class="block text-gray-700 font-semibold mb-2">Contraseña</label>
+      
+      <label class="block text-gray-700 font-semibold mb-1 text-sm">Contraseña</label>
       <input type="password"
              [(ngModel)]="password"
-             class="input input-bordered w-full px-4 py-3 text-gray-900 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-400 mb-6"
+             class="input input-bordered w-full px-3 py-2 text-sm text-gray-900 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-400 mb-4"
              placeholder="Introduce tu contraseña" />
-
+      
       <button 
-        class="btn w-full py-3 text-lg font-bold text-white bg-gray-600 hover:bg-purple-700 transition shadow-md"
+        class="btn w-full py-2 text-base font-bold text-white bg-gray-600 hover:bg-purple-700 transition shadow-md"
         (click)="login()">
         Entrar
       </button>
-
       
-      <p class="text-center text-gray-700 mt-4">
+      <p class="text-center text-gray-700 mt-3 text-sm">
         ¿No tienes cuenta? 
         <a 
           (click)="goToRegister()" 

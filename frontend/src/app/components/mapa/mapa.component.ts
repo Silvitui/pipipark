@@ -2,7 +2,7 @@ import { Component, AfterViewInit, inject, signal, effect } from '@angular/core'
 import * as mapboxgl from 'mapbox-gl';
 import { PipicanService } from '../../services/pipican.service';
 import { Pipican } from '../../interfaces/pipican';
-import { environment } from '../../../environment';
+import { environment } from '../../../environments/environment';
 import { ModalComponent } from "../../modal/modal.component";
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
