@@ -2,13 +2,14 @@ import { Component, AfterViewInit, inject, signal, effect } from '@angular/core'
 import * as mapboxgl from 'mapbox-gl';
 import { PipicanService } from '../../services/pipican.service';
 import { Pipican } from '../../interfaces/pipican';
-import { environment } from '../../../environments/environment';
+
 import { ModalComponent } from "../../modal/modal.component";
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SidebarComponent } from "../sidebar/sidebar.component";
 import { FooterComponent } from "../footer/footer.component";
 import { MobileSidebarComponent } from "../mobile-sidebar/mobile-sidebar.component";
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-mapa',

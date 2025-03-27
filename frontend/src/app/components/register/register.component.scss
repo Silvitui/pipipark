@@ -23,7 +23,7 @@
 }
 
 .background-image {
-  background-image: url('/assets/perrito-jugando1.jpg');
+  background-image: url('/assets/perritos-login-turn.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -44,4 +44,33 @@
 .register-box {
   backdrop-filter: blur(2px);
   background-color: rgba(255, 255, 255, 0.9);
+}
+@media (max-width: 800px) {
+
+  .register-layout {
+    align-items: flex-start;
+    margin-top: 2rem;
+  }
+
+
+  .register-box {
+    max-width: 95%;
+    max-height: 60vh;
+    padding: 1rem;
+    padding-top: 0;
+    transform: scale(0.9);
+  }
+
+  .register-box .logo {
+    width: 1rem !important;
+    height: auto;
+  }
+
+
+  .background-image {
+    background-image: url('/assets/perritos-login-recortada.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    opacity: 0.8;
+  }
 }
