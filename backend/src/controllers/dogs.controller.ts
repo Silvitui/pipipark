@@ -7,12 +7,16 @@ export const addDog = async (req: Request, res: Response) => {
   const authReq = req as AuthenticatedRequest;
 
   try {
-    const { name, gender, breed, age, size, photo, personality } = authReq.body;
+    const { name, gender, breed, age, size, photo, personality,castrated } = authReq.body;
     const userId = authReq.user._id;
 
     if (!name || !gender || !breed || !age || !size || !personality || personality.length === 0) {
       res.status(400).json({ error: "Todos los campos del perro son obligatorios, incluyendo personalidad." });
       return;
+    }
+    if (typeof castrated !== 'boolean') {
+       res.status(400).json({ error: "El campo 'castrado' debe ser verdadero o falso." });
+       return;
     }
 
     const parsedAge = Number(age);
