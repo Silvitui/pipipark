@@ -48,15 +48,15 @@
           (keyup.enter)="nextStep()" />
       }
 
-      @if (questions[currentStep()].type === 'number') {
+      @if (questions[currentStep()].type === 'date') {
         <input
-          type="number"
-          [(ngModel)]="answers()[questions[currentStep()].field]"
+          type="date"
+          [ngModel]="formattedDate()"
+          (ngModelChange)="handleDateChange($event)"
           class="input input-bordered w-full px-3 py-2 mb-3 rounded-lg shadow-sm text-sm"
-          placeholder="Introduce la edad"
-          min="0"
           (keyup.enter)="nextStep()" />
       }
+      
       @if (questions[currentStep()].type === 'size') {
         <input
           type="text"

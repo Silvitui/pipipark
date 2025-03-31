@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../interfaces/user.interface';
 import { Dog } from '../interfaces/dog.interface';
+import { ChangePasswordDTO } from '../interfaces/password.interface';
 
 
 @Injectable({
@@ -77,4 +78,12 @@ export class UserService {
       withCredentials: true
     });
   }
+  changePassword(data: ChangePasswordDTO) {
+    return this.http.post<{ message: string }>(
+      `${this.apiUrl}/users/change-password`,
+      data,
+      { withCredentials: true }
+    );
+  }
+  
 }

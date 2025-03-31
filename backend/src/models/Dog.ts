@@ -4,9 +4,10 @@ const DogSchema = new mongoose.Schema({
   name: { type: String, required: true, trim: true },
   gender: { type: String, required: true },
   breed: { type: String, required: true, trim: true },
-  age: { type: Number, required: true },
+  birthday: { type: Date, required: true },
   size: { type: String, required: true },
   owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  castrated: { type: Boolean, required: true }, // ✅ NUEVO CAMPO
   personality: {
     type: [String],
     enum: [
@@ -16,7 +17,7 @@ const DogSchema = new mongoose.Schema({
     ],
     required: true
   },
-  castrated: { type: Boolean, required: true }, // ✅ NUEVO CAMPO
+  
   photo: { type: String, default: "https://via.placeholder.com/150" },
 });
 

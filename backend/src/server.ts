@@ -29,6 +29,7 @@ app.use("/api/users",authMiddleware, usersRouter)
 app.use("/api/parks",authMiddleware,parksRouter)
 app.use("/api/stats",authMiddleware,statsRouter)
 app.use('/api/pipicans', pipicanRouter);
+app.use('/uploads', express.static('uploads'));
 
 
 

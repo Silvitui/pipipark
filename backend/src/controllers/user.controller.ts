@@ -39,7 +39,7 @@ export const updateUser = async (req: Request, res: Response) => {
 
       if (dogData.name) existingDog.name = dogData.name;
       if (dogData.breed) existingDog.breed = dogData.breed;
-      if (dogData.age !== undefined) existingDog.age = dogData.age;
+      if (dogData.birthday !== undefined) existingDog.birthday = dogData.age;
       if (dogData.size) existingDog.size = dogData.size;
       if (dogData.photo) existingDog.photo = dogData.photo;
       if (dogData.personality) existingDog.personality = dogData.personality;

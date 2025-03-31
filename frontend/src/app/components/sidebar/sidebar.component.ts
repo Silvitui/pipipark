@@ -42,4 +42,9 @@ export class SidebarComponent {
     this.authService.logout();
     
   }
+
+  goToProfile(): void {
+    this.router.navigate(['/profile']);
+    this.closeSidebarOnMobile();
+  }
 }

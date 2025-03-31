@@ -22,14 +22,21 @@ export const registerUser = async (req: Request, res: Response) => {
   
       const hashedPassword = await bcrypt.hash(password, 10);
       const newUser = new User({ userName, email, password: hashedPassword });
+      const parsedBirthday = new Date(dog.birthday);
+      if (isNaN(parsedBirthday.getTime())) {
+        res.status(400).json({ error: "La fecha de nacimiento del perro no es válida." });
+        return;
+      }
   
       const newDog = new Dog({
         name: dog.name,
         gender: dog.gender,
         breed: dog.breed,
-        age: dog.age,
+        birthday: parsedBirthday,
         size: dog.size,
+        castrated:dog.castrated,
         personality: dog.personality,
+        photo: dog.photo || "https://via.placeholder.com/150",
         owner: newUser._id
       });
   
@@ -50,8 +57,12 @@ export const registerUser = async (req: Request, res: Response) => {
           _id: newUser._id,
           userName: newUser.userName,
           dogs: [savedDog]
+        },
+        dog: {
+          _id: savedDog._id
         }
       });
+      
       return;
     } catch (error) {
       console.error("Error en registerUser:", error);

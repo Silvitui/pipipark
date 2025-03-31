@@ -1,3 +1,4 @@
+import { DogService } from './../../services/dog.service';
 import { Component, signal, computed, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -13,6 +14,8 @@ import { AuthService } from '../../services/auth.service';
 })
 export class RegisterComponent {
   authService = inject(AuthService);
+  DogService = inject(DogService);
+
   router = inject(Router);
 
   currentStep = signal<number>(0);
@@ -44,8 +47,8 @@ export class RegisterComponent {
     { question: '¿Cómo se llama tu perro?', field: 'name', type: 'text' },
     { question: '¿Es macho o hembra?', field: 'gender', type: 'select', options: ['macho', 'hembra'] },
     { question: '¿Qué raza es?', field: 'breed', type: 'text' },
-    { question: '¿Cuántos años tiene?', field: 'age', type: 'number' },
-    { question: '¿Qué tamaño tiene?', field: 'size', type: 'text' },
+    { question: '¿Cuándo nació tu perro?', field: 'age', type: 'date' },
+    { question: '¿Qué tamaño tiene?', field: 'size', type: 'select',options: ['pequeño', 'mediano', 'grande'] },
     { question: '¿Está castrado o esterilizado?', field: 'neutered', type: 'select', options: ['sí', 'no'] },
     { question: 'Describe su personalidad', field: 'personality', type: 'multi-select' },
     { question: 'Sube una foto de tu perro', field: 'photo', type: 'file' },
@@ -92,6 +95,8 @@ export class RegisterComponent {
 
   submitForm(): void {
     const finalData = this.answers();
+    const dogPhotoFile: File = finalData['photo']; // 👈 aquí tienes la imagen del perro
+  
     const payload = {
       userName: finalData['userName'] || '',
       email: finalData['email'] || '',
@@ -100,20 +105,55 @@ export class RegisterComponent {
         name: finalData['name'] || '',
         gender: finalData['gender'] || '',
         breed: finalData['breed'] || '',
-        age: Number(finalData['age']) || 0,
+        birthday: finalData['age'] ? new Date(finalData['age']) : new Date(),
         size: finalData['size'] || '',
-        neutered: finalData['neutered'] === 'sí',
-        personality: finalData['personality'] || [],
-        photo: finalData['photo'] || 'https://via.placeholder.com/150'
+        castrated: finalData['neutered'] === 'sí',
+        personality: finalData['personality'] || []
       }
     };
-
+  
     this.authService.registerUser(payload).subscribe({
-      next: () => this.router.navigate(['/login']),
-      error: (err) => console.error('Error en el registro:', err)
+      next: (res) => {
+        const dogId = res?.dog?._id; // asegúrate que el backend devuelve esto
+  
+        if (dogPhotoFile && dogId) {
+          const formData = new FormData();
+          formData.append('image', dogPhotoFile);
+  
+          this.DogService.uploadDogPhoto(dogId, formData).subscribe({
+            next: () => {
+              console.log('✅ Imagen subida correctamente');
+              this.router.navigate(['/login']);
+            },
+            error: (err) => {
+              console.error('❌ Error al subir la imagen:', err);
+              this.router.navigate(['/login']); // aún así rediriges
+            }
+          });
+        } else {
+          this.router.navigate(['/login']); // si no hay imagen o dogId
+        }
+      },
+      error: (err) => {
+        console.error('❌ Error en el registro:', err);
+      }
     });
   }
-
+  formattedDate(): string | null {
+    const date = this.answers()['age'];
+    if (!date) return null;
+  
+    const d = new Date(date);
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  }
+  
+  handleDateChange(value: string): void {
+    this.answers.update(a => ({ ...a, age: value }));
+  }
+  
   goToLogin(): void {
     this.router.navigate(['/login']);
   }

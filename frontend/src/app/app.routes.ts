@@ -25,5 +25,9 @@ export const routes: Routes = [
     path: 'map', 
     loadComponent: () => import('./components/mapa/mapa.component').then(m => m.MapaComponent) 
   },
+  {
+    path: 'profile',
+    loadComponent: () => import('./components/perfil/perfil.component').then(m => m.PerfilComponent)
+  },
   { path: '**', redirectTo: 'welcome' }
 ];
