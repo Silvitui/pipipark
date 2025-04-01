@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -45,6 +45,11 @@ export class SidebarComponent {
 
   goToProfile(): void {
     this.router.navigate(['/profile']);
+    this.closeSidebarOnMobile();
+  }
+
+  goToHome() : void {
+    this.router.navigate(['/welcome']);
     this.closeSidebarOnMobile();
   }
 }

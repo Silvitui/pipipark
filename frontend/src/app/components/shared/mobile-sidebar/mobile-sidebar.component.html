@@ -23,8 +23,13 @@
 
 
   <nav class="text-center space-y-4 text-lg font-semibold">
-    <a (click)="navigate('/profile')" class="block py-3 px-4 rounded-xl hover:bg-purple-600 cursor-pointer transition-colors duration-200"> Mi cuenta</a>
+    @if (authService.isAuthenticated()) {
+      <a (click)="goToProfile()" class="block py-2 px-4 rounded-lg hover:bg-purple-600 cursor-pointer">
+        Mi cuenta
+      </a>
+    }
+    
     <a (click)="navigate('/map')" class="block py-3 px-4 rounded-xl hover:bg-purple-600 cursor-pointer transition-colors duration-200"> Mapa</a>
-    <a *ngIf="authService.isAuthenticated()" (click)="logout()" class="block py-3 px-4 rounded-xl hover:bg-red-600 cursor-pointer transition-colors duration-200">🚪 Cerrar sesión</a>
+    <a *ngIf="authService.isAuthenticated()" (click)="logout()" class="block py-3 px-4 rounded-xl hover:bg-red-600 cursor-pointer transition-colors duration-200">Cerrar sesión</a>
   </nav>
 </aside>

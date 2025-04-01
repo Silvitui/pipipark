@@ -21,8 +21,14 @@
 
 
   <nav class="mt-6 flex-grow">
-    <a (click)="goToProfile()" class="block py-2 px-4 rounded-lg hover:bg-purple-600 cursor-pointer">Mi cuenta</a>
+    <a (click)="goToHome()" class="block py-2 px-4 rounded-lg hover:bg-purple-600 cursor-pointer">Inicio</a>
     <a (click)="goToMap()" class="block py-2 px-4 rounded-lg hover:bg-purple-600 cursor-pointer">Mapa</a>
+    @if (authService.isAuthenticated()) {
+      <a (click)="goToProfile()" class="block py-2 px-4 rounded-lg hover:bg-purple-600 cursor-pointer">
+        Mi cuenta
+      </a>
+    }
+    
 
   </nav>
 

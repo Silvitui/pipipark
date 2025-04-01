@@ -3,9 +3,9 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { UserService } from '../../services/user.service';
 import { CommonModule } from '@angular/common';
-import { SidebarComponent } from '../sidebar/sidebar.component';
-import { MobileSidebarComponent } from '../mobile-sidebar/mobile-sidebar.component';
-import { FooterComponent } from '../footer/footer.component';
+import { SidebarComponent } from '../shared/sidebar/sidebar.component';
+import { FooterComponent } from '../shared/footer/footer.component';
+import { MobileSidebarComponent } from '../shared/mobile-sidebar/mobile-sidebar.component';
 
 @Component({
   standalone: true,

@@ -27,7 +27,7 @@ export class RegisterComponent {
   personalityBase = [
    'aventurero', 'tranquilo', 'protector', 'curioso', 'energético',
       'gruñón', 'obediente', 'valiente', 'cariñoso', 'miedoso',
-       'amistoso', 'perezoso' , 'juguetón','inseguro','territorial','sociable','líder','listo'
+       'amistoso', 'perezoso' , 'juguetón','inseguro','territorial','sociable','líder','audaz'
   ];
 
  

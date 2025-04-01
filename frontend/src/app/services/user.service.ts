@@ -29,30 +29,35 @@ export class UserService {
       withCredentials: true
     });
   }
+  clearUserData(): void {
+    this.user.set(null);
+    this.dogs.set([]);
+  }
 
   fetchAndSetUser(): void {
     this.loadUserProfile().subscribe({
       next: (res) => {
+        console.log('📦 Perfil recibido:', res);
         this.user.set(res.user);
-
+        
         this.loadUserDogs().subscribe({
           next: (dogRes) => {
             this.dogs.set(dogRes.dogs || []);
           },
           error: (err) => {
-            console.error(' Error al obtener los perros:', err);
+            console.error('Error al obtener los perros:', err);
             this.dogs.set([]);
           }
         });
       },
       error: (err) => {
         console.error('Error al cargar el perfil:', err);
-        this.user.set(null);
-        this.dogs.set([]);
+        this.clearUserData(); 
       }
     });
   }
-
+  
+  
   getUser(): User | null {
     return this.user();
   }
@@ -80,7 +85,7 @@ export class UserService {
   }
   changePassword(data: ChangePasswordDTO) {
     return this.http.post<{ message: string }>(
-      `${this.apiUrl}/users/change-password`,
+      `${this.apiUrl}/users/changePassword`,
       data,
       { withCredentials: true }
     );

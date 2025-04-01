@@ -1,14 +1,27 @@
 import { DogService } from './../../services/dog.service';
 import { Component, inject, Input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { FormsModule } from '@angular/forms';
 import { Dog } from '../../interfaces/dog.interface';
+import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
+import { 
+  faDog, 
+  faCalendarDay, 
+  faRulerCombined,
+  faCheckCircle,
+  faHeart,
+  faChevronUp,
+  faChevronDown,
+  faPen,
+  faSave,
+  faSpinner
+} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-dog-card',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, FontAwesomeModule],
   templateUrl: './dog-card.component.html',
 })
 export class DogCardComponent {
@@ -17,21 +30,27 @@ export class DogCardComponent {
   previewUrl = signal<string | null>(null);
   loading = signal(false);
   editing = signal(false);
-form = signal<Partial<Dog>>({});
+  form = signal<Partial<Dog>>({});
 
-   dogService = inject(DogService);
-   personalityOptions = [
+  dogService = inject(DogService);
+  constructor(library: FaIconLibrary) {
+    library.addIcons(
+      faDog, faCalendarDay, faRulerCombined,
+      faCheckCircle, faHeart, faChevronUp,
+      faChevronDown, faPen, faSave, faSpinner
+    );
+  }
+  personalityOptions = [
     'aventurero', 'tranquilo', 'protector', 'curioso', 'energético',
     'gruñón', 'obediente', 'valiente', 'dependiente', 'miedoso',
     'amistoso', 'perezoso', 'juguetón', 'inseguro', 'territorial',
-    'sociable', 'líder', 'listo'
+    'sociable', 'líder', 'audaz'
   ];
   showPersonalityOptions = signal(false);
 
   togglePersonalityEditor() {
     this.showPersonalityOptions.update(v => !v);
   }
-  
   
   togglePersonality(trait: string) {
     const current = this.form().personality || [];
@@ -62,7 +81,7 @@ form = signal<Partial<Dog>>({});
     this.loading.set(true);
     this.dogService.uploadDogPhoto(this.dog._id, formData).subscribe({
       next: (res) => {
-        this.dog.photo = res.photo; // actualiza la imagen
+        this.dog.photo = res.photo;
         this.previewUrl.set(null);
         this.selectedFile.set(null);
         this.loading.set(false);
@@ -73,6 +92,7 @@ form = signal<Partial<Dog>>({});
       }
     });
   }
+
   startEditing() {
     this.editing.set(true);
     this.form.set({ ...this.dog });
@@ -85,10 +105,9 @@ form = signal<Partial<Dog>>({});
   saveDogChanges() {
     const updated = this.form();
   
-    // Aquí llamas a tu servicio DogService para guardar cambios
     this.dogService.updateDog(this.dog._id, updated).subscribe({
       next: (res) => {
-        this.dog = res.dog; // actualiza con los nuevos datos
+        this.dog = res.dog;
         this.editing.set(false);
       },
       error: (err) => {
@@ -96,5 +115,4 @@ form = signal<Partial<Dog>>({});
       }
     });
   }
-  
 }

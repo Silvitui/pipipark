@@ -6,15 +6,23 @@ import { DogCardComponent } from '../dog-card/dog-card.component';
 import { UserService } from '../../services/user.service';
 import { Dog } from '../../interfaces/dog.interface';
 
+import { SidebarComponent } from '../shared/sidebar/sidebar.component';
+import { MobileSidebarComponent } from '../shared/mobile-sidebar/mobile-sidebar.component';
+import { MiniDogCardComponent } from '../shared/mini-dog-card/mini-dog-card.component';
+import { ButtonAddDogComponent } from '../shared/button-add-dog/button-add-dog.component';
+
+
 
 @Component({
   selector: 'app-perfil',
   standalone: true,
-  imports: [CommonModule, FormsModule, DogCardComponent],
+  imports: [CommonModule, FormsModule, MobileSidebarComponent,SidebarComponent,DogCardComponent,MiniDogCardComponent,ButtonAddDogComponent],
   templateUrl: './perfil.component.html',
 })
 export class PerfilComponent implements OnInit {
-  private userService = inject(UserService);
+  userService = inject(UserService);
+  addDogOpen = signal(false);
+
 
   user = computed(() => this.userService.getUser());
   dogs = computed(() => this.userService.getDogs());
@@ -43,7 +51,10 @@ export class PerfilComponent implements OnInit {
       });
     }
   }
-
+  handleDogModalClose() {
+    this.addDogOpen.set(false);
+    this.userService.fetchAndSetUser(); // refresca los perros
+  }
   startEditing() {
     const currentUser = this.user();
     if (currentUser) {
@@ -61,6 +72,13 @@ export class PerfilComponent implements OnInit {
 
   saveChanges() {
     const updated = this.form();
+    if (!updated.userName || !updated.email) {
+      console.warn('❗ No hay datos que actualizar');
+      return;
+    }
+  
+    console.log('📤 Enviando al backend:', updated);
+  
     this.userService.updateProfile(updated).subscribe({
       next: () => {
         this.userService.fetchAndSetUser();
@@ -71,7 +89,8 @@ export class PerfilComponent implements OnInit {
       }
     });
   }
-
+  
+  
   togglePasswordForm() {
     this.changingPassword.update(v => !v);
     this.passwordForm.set({ currentPassword: '', newPassword: '', confirmPassword: '' });
@@ -92,7 +111,7 @@ export class PerfilComponent implements OnInit {
       return;
     }
 
-    this.userService.changePassword({ currentPassword, newPassword }).subscribe({
+    this.userService.changePassword({ currentPassword, newPassword, confirmPassword }).subscribe({
       next: () => {
         this.successMessage.set('Contraseña actualizada correctamente.');
         this.errorMessage.set('');
@@ -104,6 +123,7 @@ export class PerfilComponent implements OnInit {
         this.successMessage.set('');
       }
     });
+    
   }
 
   trackById(index: number, dog: Dog) {

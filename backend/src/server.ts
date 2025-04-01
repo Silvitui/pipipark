@@ -28,7 +28,7 @@ app.use("/api/dogs",authMiddleware, dogsRouter);
 app.use("/api/users",authMiddleware, usersRouter)
 app.use("/api/parks",authMiddleware,parksRouter)
 app.use("/api/stats",authMiddleware,statsRouter)
-app.use('/api/pipicans', pipicanRouter);
+app.use('/api/pipicans',authMiddleware, pipicanRouter);
 app.use('/uploads', express.static('uploads'));
 
 

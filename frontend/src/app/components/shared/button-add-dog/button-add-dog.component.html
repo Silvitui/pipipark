@@ -1,0 +1,149 @@
+<div class="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+    <div class="bg-white w-full max-w-2xl rounded-xl shadow-lg p-6 relative mx-2">
+      <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Añadir nuevo integrante</h2>
+
+      <form class="space-y-4" (ngSubmit)="submitForm()">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
+            <input
+              type="text"
+              class="input input-bordered w-full"
+              [(ngModel)]="formData().name"
+              name="name"
+              placeholder="Ej: Max"
+              required
+            />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Género</label>
+            <select
+              class="select select-bordered w-full"
+              [(ngModel)]="formData().gender"
+              name="gender"
+              required
+            >
+              <option disabled selected value="">Selecciona género</option>
+              <option value="macho">Macho</option>
+              <option value="hembra">Hembra</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Raza</label>
+            <input
+              type="text"
+              class="input input-bordered w-full"
+              [(ngModel)]="formData().breed"
+              name="breed"
+              placeholder="Ej: Labrador"
+              required
+            />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Fecha nacimiento</label>
+            <input
+              type="date"
+              class="input input-bordered w-full"
+              [(ngModel)]="formData().birthday"
+              name="birthday"
+              required
+            />
+          </div>
+  
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Tamaño</label>
+            <select
+              class="select select-bordered w-full"
+              [(ngModel)]="formData().size"
+              name="size"
+              required
+            >
+              <option disabled selected value="">Selecciona tamaño</option>
+              <option value="pequeño">Pequeño</option>
+              <option value="mediano">Mediano</option>
+              <option value="grande">Grande</option>
+            </select>
+          </div>
+  
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Castrado</label>
+            <select
+              class="select select-bordered w-full"
+              [(ngModel)]="formData().castrated"
+              name="castrated"
+              required
+            >
+              <option disabled selected value="">Selecciona opción</option>
+              <option value="sí">Sí</option>
+              <option value="no">No</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Personalidad</label>
+          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+            @for (trait of allPersonalities; track trait) {
+              <label class="flex items-center gap-2 p-2 bg-gray-50 rounded-lg cursor-pointer hover:bg-purple-50 transition-colors">
+                <input
+                  type="checkbox"
+                  class="checkbox checkbox-sm checkbox-primary"
+                  [checked]="formData().personality.includes(trait)"
+                  (change)="togglePersonality(trait)"
+                />
+                <span class="text-sm text-gray-700">{{ trait }}</span>
+              </label>
+            }
+          </div>
+        </div>
+  
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Foto del perro</label>
+          <label class="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg p-4 cursor-pointer hover:border-purple-400 transition-colors">
+            <span class="text-purple-600 text-sm mb-2">📸 Haz clic para subir foto</span>
+            <input
+              type="file"
+              class="hidden"
+              (change)="onFileChange($event)"
+              accept="image/*"
+            />
+            @if (formData().photo) {
+              <img 
+                [src]="previewImage()"
+                alt="Previsualización"
+                class="mt-2 w-20 h-20 object-cover rounded-lg"
+              />
+            }
+          </label>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-3 mt-6">
+          <button
+            type="button"
+            (click)="cancel()"
+            class="btn btn-outline btn-error flex-1"
+          >
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary flex-1"
+            [disabled]="loading()"
+          >
+            @if (loading()) {
+              <span class="loading loading-spinner"></span>
+              Guardando...
+            } @else {
+              Guardar
+            }
+          </button>
+        </div>
+        @if (error()) {
+          <div class="mt-4 p-3 bg-red-50 text-red-700 rounded-lg text-sm text-center">
+            {{ error() }}
+          </div>
+        }
+      </form>
+    </div>
+  </div>

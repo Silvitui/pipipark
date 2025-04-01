@@ -13,7 +13,7 @@ const DogSchema = new mongoose.Schema({
     enum: [
       'aventurero', 'tranquilo', 'protector', 'curioso', 'energético',
       'gruñón', 'obediente', 'valiente', 'dependiente', 'miedoso',
-      'amistoso', 'perezoso', 'juguetón','inseguro','territorial','sociable','líder','listo'
+      'amistoso', 'perezoso', 'juguetón','inseguro','territorial','sociable','líder','audaz'
     ],
     required: true
   },

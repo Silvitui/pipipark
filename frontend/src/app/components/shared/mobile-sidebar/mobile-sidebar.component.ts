@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-mobile-sidebar',
@@ -22,6 +22,10 @@ export class MobileSidebarComponent {
   navigate(path: string): void {
     this.router.navigate([path]);
     this.showMenu = false;
+  }
+  goToProfile(): void {
+    this.router.navigate(['/profile']);
+    
   }
 
   logout(): void {

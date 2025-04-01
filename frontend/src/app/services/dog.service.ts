@@ -7,18 +7,25 @@ import { Dog } from '../interfaces/dog.interface';
   providedIn: 'root'
 })
 export class DogService {
-  private http = inject(HttpClient);
- apiUrl = 'http://localhost:3000/api'; // 👈 puedes cambiarlo a environment.apiUrl más adelante
+ http = inject(HttpClient);
+ apiUrl = 'http://localhost:3000/api'; 
 
   /**
    * Sube una imagen para el perro con ID dado.
-   * @param dogId ID del perro
-   * @param formData FormData que contiene la imagen (clave: 'image')
-   * @returns Observable con la nueva URL de la imagen
+   * @param dogId 
+   * @param formData 
+   * @returns 
    */
   updateDog(dogId: string, data: Partial<Dog>): Observable<{ dog: Dog }> {
     return this.http.put<{ dog: Dog }>(
       `${this.apiUrl}/dogs/${dogId}`,
+      data,
+      { withCredentials: true }
+    );
+  }
+  addDog(data: Partial<Dog>): Observable<{ dog: Dog }> {
+    return this.http.post<{ dog: Dog }>(
+      `${this.apiUrl}/dogs`,
       data,
       { withCredentials: true }
     );
@@ -32,6 +39,5 @@ export class DogService {
     );
   }
   
-  // Aquí puedes añadir otros métodos como:
-  // getMyDogs(), addDog(), deleteDog(), etc.
+
 }

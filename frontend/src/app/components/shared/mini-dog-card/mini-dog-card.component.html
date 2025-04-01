@@ -1,0 +1,51 @@
+<div class="flex items-start gap-4 p-4 rounded-xl bg-white shadow-md border border-gray-200 w-full max-w-sm hover:shadow-lg transition duration-300">
+    <img
+      [src]="dog.photo || 'assets/dog-placeholder.jpg'"
+      alt="Foto de {{ dog.name }}"
+      class="w-20 h-20 object-cover rounded-full border-2 border-purple-300 flex-shrink-0"
+    />
+  
+
+    <div class="flex-1 space-y-1 overflow-hidden">
+ 
+      <h3 class="text-lg font-semibold text-gray-800 truncate">{{ dog.name }}</h3>
+  
+      <p class="text-sm text-gray-500 truncate">
+        @if (dog.breed) {
+          {{ dog.breed }}
+        } @else {
+          Raza no especificada
+        }
+      </p>
+
+      <div class="flex flex-wrap gap-2 mt-1">
+        @if (dog.size) {
+          <span class="badge badge-outline badge-sm">{{ dog.size }}</span>
+        }
+        @if (dog.gender) {
+          <span class="badge badge-outline badge-sm">{{ dog.gender }}</span>
+        }
+        @if (dog.castrated !== undefined) {
+          <span class="badge badge-sm"
+                [ngClass]="dog.castrated ? 'badge-success' : 'badge-outline text-gray-500 border-gray-300'">
+            {{ dog.castrated ? 'Castrado' : 'No castrado' }}
+          </span>
+        }
+      </div>
+     
+      @if (dog.birthday) {
+        <p class="text-xs text-gray-400 mt-1">
+          Nacido el {{ dog.birthday | date: 'mediumDate' }}
+        </p>
+      }
+  
+      @if (dog.personality && dog.personality.length > 0) {
+        <div class="flex flex-wrap gap-1 mt-2">
+          @for (trait of dog.personality; track trait) {
+            <span class="badge badge-xs badge-primary badge-outline text-xs">{{ trait }}</span>
+          }
+        </div>
+      }
+    </div>
+  </div>
+  
