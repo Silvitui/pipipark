@@ -1,5 +1,4 @@
 <div class="relative flex flex-col min-h-screen overflow-hidden">
-  <!-- Background image with blur -->
   <img
     src="assets/loginlayout-blur.webp"
     class="absolute inset-0 w-full h-full object-cover blur-xl scale-110 transition-opacity"
@@ -7,7 +6,7 @@
     [class.opacity-0]="imageLoaded()"
   />
 
-  <!-- Main dog image with conditional loading based on screen size -->
+
   <img
     [src]="isMobile() ? 'assets/perritos-login-recortada.jpg' : 'assets/perritos-login.webp'"
     class="absolute inset-0 w-full h-full object-cover transition-opacity duration-200 -z-10"

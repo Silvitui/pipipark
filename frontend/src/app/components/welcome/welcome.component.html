@@ -1,15 +1,11 @@
 <div class="min-h-screen w-full flex flex-col lg:flex-row relative overflow-hidden bg-stone-200">
-  <app-mobile-sidebar></app-mobile-sidebar>
-
-  <div class="hidden lg:block">
-    <app-sidebar></app-sidebar>
-  </div>
-
   <div class="relative flex-grow flex flex-col-reverse lg:flex-row items-center justify-between 
-              px-6 sm:px-10 lg:px-16 py-8  lg:bg-transparent">
+              px-6 sm:px-10 lg:px-16 py-8 lg:py-0 lg:min-h-screen lg:bg-transparent">
+    
+    
     <div class="w-full lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left 
                 relative z-10 animate-fade-up">
-      
+
       <h1 class="text-white lg:text-gray-800 text-3xl sm:text-4xl md:text-5xl font-bold mt-6 drop-shadow-md">
         ¡Conecta a tu perro con nuevos amigos!
       </h1>
@@ -19,7 +15,7 @@
       </p>
 
       @if (authService.isAuthenticated()) {
-        <p class="text-white md:text-gray-800 text-3xl font-bold text-center animate-fade-up mt-6">
+        <p class="text-white md:text-gray-800 text-3xl font-bold animate-fade-up mt-6 text-center w-full">
           ¿Damos un paseo con {{ userService.dogNames() || 'tu peludo' }}? 
           <span>💜</span>
         </p>
@@ -46,10 +42,8 @@
       <img 
         src="assets/jagerPeque_no_bg.png" 
         alt="Jager" 
-        class="w-full h-full object-cover lg:absolute inset-0 lg:object-cover lg:h-full lg:w-full opacity-80 lg:opacity-100 animate-fade-up"
+        class="w-full h-full object-cover lg:absolute inset-8 lg:object-cover lg:h-full lg:w-full opacity-80 lg:opacity-100 animate-fade-up"
       />
     </div>
   </div>
 </div>
-
-<app-footer></app-footer>

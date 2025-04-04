@@ -1,0 +1,20 @@
+<div class="relative flex flex-col min-h-screen overflow-hidden">
+    <img
+      src="assets/perritos-login-turn.jpg"
+      class="absolute inset-0 w-full h-full object-cover blur-xl scale-110 transition-opacity"
+      [class.opacity-100]="!imageLoaded()"
+      [class.opacity-0]="imageLoaded()"
+    />
+  
+  
+    <img
+      [src]="isMobile() ? 'assets/perritos-login-recortada.jpg' : 'assets/perritos-login.webp'"
+      class="absolute inset-0 w-full h-full object-cover transition-opacity duration-200 -z-10"
+      (load)="onLoad()"
+      [class.opacity-0]="!imageLoaded()"
+      [class.opacity-80]="imageLoaded()"
+    />
+    
+    <router-outlet></router-outlet>
+  </div>
+  

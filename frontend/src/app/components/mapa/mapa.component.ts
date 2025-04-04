@@ -15,7 +15,7 @@ import { environment } from '../../../environments/environment';
   selector: 'app-mapa',
   templateUrl: './mapa.component.html',
   styleUrls: ['./mapa.component.scss'],
-  imports: [CommonModule, FormsModule, ModalComponent, SidebarComponent, FooterComponent,MobileSidebarComponent],
+  imports: [CommonModule, FormsModule, ModalComponent],
   standalone: true 
 })
 export class MapaComponent implements AfterViewInit {

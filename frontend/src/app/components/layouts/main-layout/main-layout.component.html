@@ -1,0 +1,22 @@
+<div class="min-h-screen w-full flex flex-col bg-stone-200 relative">
+    <app-mobile-sidebar></app-mobile-sidebar>
+    <div 
+      class="hidden lg:block fixed top-0 left-0 h-screen w-64 z-50 transition-transform duration-300"
+      [ngClass]="{ 'translate-x-0': isSidebarOpen(), '-translate-x-full': !isSidebarOpen() }"
+    >
+      <app-sidebar></app-sidebar>
+    </div>
+
+    <div 
+      class="flex-grow min-h-screen flex flex-col transition-all duration-300"
+      [ngClass]="{ 'lg:pl-64': isSidebarOpen(), 'lg:pl-0': !isSidebarOpen() }"
+    >
+     
+      <main class="flex-grow">
+        <router-outlet></router-outlet>
+      </main>
+  
+      <app-footer></app-footer>
+    </div>
+  </div>
+  

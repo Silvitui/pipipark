@@ -22,13 +22,7 @@
   overflow: hidden;
 }
 
-.background-image {
-  background-image: url('/assets/perritos-login-turn.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  opacity: 0.8; 
-}
+
 
 .register-layout {
   position: relative;
@@ -67,10 +61,4 @@
   }
 
 
-  .background-image {
-    background-image: url('/assets/perritos-login-recortada.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    opacity: 0.8;
-  }
 }

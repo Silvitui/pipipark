@@ -25,17 +25,17 @@ export class SidebarComponent {
 
   goToLogin(): void {
     this.router.navigate(['/login']);
-    this.closeSidebarOnMobile();
+   
   }
 
   goToRegister(): void {
     this.router.navigate(['/register']);
-    this.closeSidebarOnMobile();
+   
   }
 
   goToMap(): void {
     this.router.navigate(['/map']);
-    this.closeSidebarOnMobile();
+
   }
 
   logout(): void {
@@ -45,11 +45,11 @@ export class SidebarComponent {
 
   goToProfile(): void {
     this.router.navigate(['/profile']);
-    this.closeSidebarOnMobile();
+
   }
 
   goToHome() : void {
     this.router.navigate(['/welcome']);
-    this.closeSidebarOnMobile();
+ 
   }
 }

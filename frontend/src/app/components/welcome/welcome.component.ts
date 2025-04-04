@@ -3,16 +3,14 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { UserService } from '../../services/user.service';
 import { CommonModule } from '@angular/common';
-import { SidebarComponent } from '../shared/sidebar/sidebar.component';
-import { FooterComponent } from '../shared/footer/footer.component';
-import { MobileSidebarComponent } from '../shared/mobile-sidebar/mobile-sidebar.component';
+
 
 @Component({
   standalone: true,
   selector: 'app-welcome',
   templateUrl: './welcome.component.html',
   styleUrls: ['./welcome.component.scss'],
-  imports: [CommonModule, FooterComponent, SidebarComponent, MobileSidebarComponent]
+  imports: [CommonModule]
 })
 export class WelcomeComponent implements OnInit {
   router = inject(Router);

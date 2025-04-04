@@ -27,6 +27,10 @@ export class MobileSidebarComponent {
     this.router.navigate(['/profile']);
     
   }
+  goToHome(): void {
+    this.router.navigate(['/welcome']);
+    this.showMenu = false;
+  }
 
   logout(): void {
     this.authService.logout();
