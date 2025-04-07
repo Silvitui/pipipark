@@ -25,6 +25,7 @@ export class MobileSidebarComponent {
   }
   goToProfile(): void {
     this.router.navigate(['/profile']);
+    this.showMenu = false;
     
   }
   goToHome(): void {

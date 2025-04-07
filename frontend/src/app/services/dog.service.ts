@@ -38,6 +38,13 @@ export class DogService {
       { withCredentials: true }
     );
   }
+  deleteDog(dogId: string): Observable<{ message: string }> {
+    return this.http.delete<{ message: string }>(
+      `${this.apiUrl}/dogs/${dogId}`,
+      { withCredentials: true }
+    );
+  }
+  
   
 
 }

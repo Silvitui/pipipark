@@ -1,0 +1,16 @@
+<div class="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg shadow-lg w-full max-w-sm p-6">
+      <h2 class="text-xl font-semibold text-gray-800 mb-4 text-center">
+        ¿Dar de baja a {{ dog.name }}?
+      </h2>
+      <p class="text-sm text-gray-600 text-center mb-6">
+        Esta acción eliminará a <strong>{{ dog.name }}</strong> de tu perfil. Esta operación no se podrá deshacer.
+      </p>
+      <div class="flex justify-end gap-4">
+        <button class="btn btn-outline text-gray-600" (click)="cancel()">Cancelar</button>
+        <button class="btn bg-purple-600 text-white hover:bg-purple-700" (click)="confirmDelete()">
+          Sí, eliminar
+        </button>
+      </div>
+    </div>
+  </div>

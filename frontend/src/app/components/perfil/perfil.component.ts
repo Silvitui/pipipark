@@ -1,3 +1,4 @@
+import { DogService } from './../../services/dog.service';
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -10,19 +11,22 @@ import { SidebarComponent } from '../shared/sidebar/sidebar.component';
 import { MobileSidebarComponent } from '../shared/mobile-sidebar/mobile-sidebar.component';
 import { MiniDogCardComponent } from '../shared/mini-dog-card/mini-dog-card.component';
 import { ButtonAddDogComponent } from '../shared/button-add-dog/button-add-dog.component';
+import { DeleteDogComponent } from '../delete-dog/delete-dog.component';
 
 
 
 @Component({
   selector: 'app-perfil',
   standalone: true,
-  imports: [CommonModule, FormsModule, MobileSidebarComponent,SidebarComponent,DogCardComponent,MiniDogCardComponent,ButtonAddDogComponent],
+  imports: [CommonModule, FormsModule, MobileSidebarComponent,SidebarComponent,DogCardComponent,MiniDogCardComponent,ButtonAddDogComponent,DeleteDogComponent],
   templateUrl: './perfil.component.html',
 })
 export class PerfilComponent implements OnInit {
   userService = inject(UserService);
+  DogService = inject(DogService);
   addDogOpen = signal(false);
-
+  selectedDogToDelete = signal<Dog | null>(null);
+showDeleteModal = signal(false);
 
   user = computed(() => this.userService.getUser());
   dogs = computed(() => this.userService.getDogs());
@@ -128,5 +132,31 @@ export class PerfilComponent implements OnInit {
 
   trackById(index: number, dog: Dog) {
     return dog._id;
+
   }
+  openDeleteModal(dog: Dog) {
+    this.selectedDogToDelete.set(dog);
+  }
+  
+  handleModalClose() {
+    this.showDeleteModal.set(false);
+    this.selectedDogToDelete.set(null);
+  }
+  
+  
+  handleDeleteConfirmed(dogId: string) {
+    this.DogService.deleteDog(dogId).subscribe({
+      next: () => {
+        this.userService.fetchAndSetUser();
+        this.showDeleteModal.set(false);
+        this.selectedDogToDelete.set(null);
+      },
+      error: (err) => {
+        console.error('❌ Error al eliminar el perro:', err);
+      }
+    });
+  }
+  
+
+
 }

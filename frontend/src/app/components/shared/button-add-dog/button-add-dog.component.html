@@ -1,149 +1,169 @@
-<div class="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-    <div class="bg-white w-full max-w-2xl rounded-xl shadow-lg p-6 relative mx-2">
-      <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Añadir nuevo integrante</h2>
+<div class="fixed inset-0 bg-black/50 flex items-center justify-center p-1 md:p-3 z-50">
+  <div class="bg-white w-full max-w-xs md:max-w-md rounded-sm md:rounded-md shadow-sm md:shadow-md p-1 md:p-4 relative mx-1 md:mx-2">
+    <h2 class="text-[9px] md:text-base font-bold text-gray-800 mb-0.5 md:mb-3 text-center">
+      Añadir nuevo integrante
+    </h2>
 
-      <form class="space-y-4" (ngSubmit)="submitForm()">
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
-            <input
-              type="text"
-              class="input input-bordered w-full"
-              [(ngModel)]="formData().name"
-              name="name"
-              placeholder="Ej: Max"
-              required
-            />
-          </div>
-
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Género</label>
-            <select
-              class="select select-bordered w-full"
-              [(ngModel)]="formData().gender"
-              name="gender"
-              required
-            >
-              <option disabled selected value="">Selecciona género</option>
-              <option value="macho">Macho</option>
-              <option value="hembra">Hembra</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Raza</label>
-            <input
-              type="text"
-              class="input input-bordered w-full"
-              [(ngModel)]="formData().breed"
-              name="breed"
-              placeholder="Ej: Labrador"
-              required
-            />
-          </div>
-
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Fecha nacimiento</label>
-            <input
-              type="date"
-              class="input input-bordered w-full"
-              [(ngModel)]="formData().birthday"
-              name="birthday"
-              required
-            />
-          </div>
-  
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Tamaño</label>
-            <select
-              class="select select-bordered w-full"
-              [(ngModel)]="formData().size"
-              name="size"
-              required
-            >
-              <option disabled selected value="">Selecciona tamaño</option>
-              <option value="pequeño">Pequeño</option>
-              <option value="mediano">Mediano</option>
-              <option value="grande">Grande</option>
-            </select>
-          </div>
-  
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Castrado</label>
-            <select
-              class="select select-bordered w-full"
-              [(ngModel)]="formData().castrated"
-              name="castrated"
-              required
-            >
-              <option disabled selected value="">Selecciona opción</option>
-              <option value="sí">Sí</option>
-              <option value="no">No</option>
-            </select>
-          </div>
-        </div>
-
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">Personalidad</label>
-          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
-            @for (trait of allPersonalities; track trait) {
-              <label class="flex items-center gap-2 p-2 bg-gray-50 rounded-lg cursor-pointer hover:bg-purple-50 transition-colors">
-                <input
-                  type="checkbox"
-                  class="checkbox checkbox-sm checkbox-primary"
-                  [checked]="formData().personality.includes(trait)"
-                  (change)="togglePersonality(trait)"
-                />
-                <span class="text-sm text-gray-700">{{ trait }}</span>
-              </label>
-            }
-          </div>
-        </div>
-  
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">Foto del perro</label>
-          <label class="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg p-4 cursor-pointer hover:border-purple-400 transition-colors">
-            <span class="text-purple-600 text-sm mb-2">📸 Haz clic para subir foto</span>
-            <input
-              type="file"
-              class="hidden"
-              (change)="onFileChange($event)"
-              accept="image/*"
-            />
-            @if (formData().photo) {
-              <img 
-                [src]="previewImage()"
-                alt="Previsualización"
-                class="mt-2 w-20 h-20 object-cover rounded-lg"
-              />
-            }
+    <form class="space-y-0.5 md:space-y-3" (ngSubmit)="submitForm()">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-0.5 md:gap-3">
+        <div class="md:col-span-1">
+          <label class="block text-[8px] md:text-sm font-medium text-gray-700 mb-0.5 md:mb-1">
+            Nombre
           </label>
+          <input
+            type="text"
+            class="input input-bordered w-full h-4 md:h-9 text-[8px] md:text-sm px-0.5 md:px-2"
+            [(ngModel)]="formData().name"
+            name="name"
+            placeholder="Ej: Max"
+            required
+          />
         </div>
-        <div class="flex flex-col sm:flex-row gap-3 mt-6">
-          <button
-            type="button"
-            (click)="cancel()"
-            class="btn btn-outline btn-error flex-1"
+        <div class="md:col-span-1">
+          <label class="block text-[8px] md:text-sm font-medium text-gray-700 mb-0.5 md:mb-1">
+            Género
+          </label>
+          <select
+            class="select select-bordered w-full h-4 md:h-9 text-[8px] md:text-sm px-0.5 md:px-2"
+            [(ngModel)]="formData().gender"
+            name="gender"
+            required
           >
-            Cancelar
-          </button>
-          <button
-            type="submit"
-            class="btn btn-primary flex-1"
-            [disabled]="loading()"
-          >
-            @if (loading()) {
-              <span class="loading loading-spinner"></span>
-              Guardando...
-            } @else {
-              Guardar
-            }
-          </button>
+            <option disabled selected value="">Selecciona género</option>
+            <option value="macho">Macho</option>
+            <option value="hembra">Hembra</option>
+          </select>
         </div>
-        @if (error()) {
-          <div class="mt-4 p-3 bg-red-50 text-red-700 rounded-lg text-sm text-center">
-            {{ error() }}
-          </div>
-        }
-      </form>
-    </div>
+
+ 
+        <div class="md:col-span-1">
+          <label class="block text-[8px] md:text-sm font-medium text-gray-700 mb-0.5 md:mb-1">
+            Raza
+          </label>
+          <input
+            type="text"
+            class="input input-bordered w-full h-4 md:h-9 text-[8px] md:text-sm px-0.5 md:px-2"
+            [(ngModel)]="formData().breed"
+            name="breed"
+            placeholder="Ej: Labrador"
+            required
+          />
+        </div>
+
+      
+        <div class="md:col-span-1">
+          <label class="block text-[8px] md:text-sm font-medium text-gray-700 mb-0.5 md:mb-1">
+            Fecha nacimiento
+          </label>
+          <input
+            type="date"
+            class="input input-bordered w-full h-4 md:h-9 text-[8px] md:text-sm px-0.5 md:px-2"
+            [(ngModel)]="formData().birthday"
+            name="birthday"
+            required
+          />
+        </div>
+
+      
+        <div class="md:col-span-1">
+          <label class="block text-[8px] md:text-sm font-medium text-gray-700 mb-0.5 md:mb-1">
+            Tamaño
+          </label>
+          <select
+            class="select select-bordered w-full h-4 md:h-9 text-[8px] md:text-sm px-0.5 md:px-2"
+            [(ngModel)]="formData().size"
+            name="size"
+            required
+          >
+            <option disabled selected value="">Selecciona tamaño</option>
+            <option value="pequeño">Pequeño</option>
+            <option value="mediano">Mediano</option>
+            <option value="grande">Grande</option>
+          </select>
+        </div>
+
+      
+<div class="md:col-span-1">
+  <label class="block text-[8px] md:text-sm font-medium text-gray-700 mb-0.5 md:mb-1">
+    Castrado
+  </label>
+  <select
+    class="select select-bordered w-full h-4 md:h-9 text-[8px] md:text-sm px-0.5 md:px-2"
+    [(ngModel)]="formData().castrated"
+    name="castrated"
+    required
+  >
+    <option [ngValue]="null" disabled selected>Selecciona opción</option>
+    <option [ngValue]="true">Sí</option>
+    <option [ngValue]="false">No</option>
+  </select>
+</div>
+
+
+<div>
+  <label class="block text-[8px] md:text-sm font-medium text-gray-700 mb-0.5 md:mb-1">
+    Personalidad
+  </label>
+
+  <div class="flex flex-wrap gap-x-1 gap-y-1 md:gap-x-2 md:gap-y-2 items-start max-h-12 md:max-h-24 overflow-y-auto p-0.5 md:p-1 bg-gray-50 md:bg-white rounded-sm md:rounded-md">
+    @for (trait of allPersonalities; track trait) {
+      <label
+        class="flex items-center gap-0.5 px-1.5 py-0.5 bg-white md:bg-gray-50 rounded-full border border-gray-200 text-[8px] md:text-xs whitespace-nowrap cursor-pointer select-none"
+      >
+        <input
+          type="checkbox"
+          class="checkbox checkbox-xs md:checkbox-sm"
+          [checked]="formData().personality.includes(trait)"
+          (change)="togglePersonality(trait)"
+        />
+        {{ trait }}
+      </label>
+    }
   </div>
+</div>
+
+
+      <!-- Foto -->
+      <div>
+        <label class="block text-[8px] md:text-sm font-medium text-gray-700 mb-0.5 md:mb-1">
+          Foto del perro
+        </label>
+        <label class="flex flex-col items-center justify-center border border-dashed border-gray-300 rounded-sm md:rounded-lg p-0.5 md:p-2 cursor-pointer hover:border-purple-400 transition-colors">
+          <span class="text-purple-500 text-[8px] md:text-sm">📸 Subir foto</span>
+          <input
+            type="file"
+            class="hidden"
+            (change)="onFileChange($event)"
+            accept="image/*"
+          />
+          @if (formData().photo) {
+            <img 
+              [src]="previewImage()"
+              alt="Previsualización"
+              class="mt-0.5 md:mt-1 w-8 h-8 md:w-16 md:h-16 object-cover rounded-sm md:rounded-lg"
+            />
+          }
+        </label>
+      </div>
+
+<div class="flex flex-col md:flex-row gap-1 md:gap-3 mt-2 md:mt-4 justify-center items-center">
+  <button
+    type="button"
+    (click)="cancel()"
+    class="btn btn-outline btn-error w-full md:flex-1 h-5 md:h-8 text-[9px] md:text-xs px-2 md:px-3 min-h-0"
+  >
+    Cancelar
+  </button>
+  <button
+    type="submit"
+    class="btn bg-purple-400 w-full md:flex-1 h-5 md:h-8 text-[9px] md:text-xs px-2 md:px-3 min-h-0"
+    [disabled]="loading()"
+  >
+    @if (loading()) {
+      <span class="loading loading-spinner loading-xs md:loading-sm"></span>
+      <span class="hidden md:inline">Guardando...</span>
+    } @else {
+      Guardar
+    }
+  </button>
+</div>

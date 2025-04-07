@@ -1,8 +1,7 @@
-import { Component, EventEmitter, Output, computed, inject, signal } from '@angular/core';
+import { Component, EventEmitter, Output, inject, signal } from '@angular/core';
 import { DogService } from '../../../services/dog.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { from } from 'rxjs';
 import { switchMap, tap, catchError } from 'rxjs/operators';
 
@@ -24,14 +23,18 @@ export class ButtonAddDogComponent {
     breed: '',
     birthday: '',
     size: '',
-    castrated: '',
+    castrated: null as boolean | null, 
     personality: [] as string[],
     photo: null as File | null
   });
 
-  allPersonalities = [ 'aventurero', 'tranquilo', 'protector', 'curioso', 'energético',
+  allPersonalities = [
+    'aventurero', 'tranquilo', 'protector', 'curioso', 'energético',
     'gruñón', 'obediente', 'valiente', 'cariñoso', 'miedoso',
-     'amistoso', 'perezoso' , 'juguetón','inseguro','territorial','sociable','líder','audaz'];
+    'amistoso', 'perezoso', 'juguetón', 'inseguro', 'territorial',
+    'sociable', 'líder', 'audaz'
+  ];
+
   loading = signal(false);
   error = signal<string | null>(null);
 
@@ -58,19 +61,27 @@ export class ButtonAddDogComponent {
   submitForm() {
     this.loading.set(true);
     this.error.set(null);
-  
+
     const fd = this.formData();
+
+   
+    if (fd.castrated === null) {
+      this.error.set('Por favor, selecciona si tu perro está castrado o no.');
+      this.loading.set(false);
+      return;
+    }
+
     const payload = {
       name: fd.name,
       gender: fd.gender,
       breed: fd.breed,
-      birthday: new Date(fd.birthday), // 
+      birthday: new Date(fd.birthday),
       size: fd.size,
-      castrated: fd.castrated === 'sí',
+      castrated: fd.castrated, 
       personality: fd.personality,
       photo: ''
     };
-  
+
     from(this.dogService.addDog(payload)).pipe(
       switchMap((res: any) => {
         if (fd.photo && res?.dog?._id) {
@@ -82,7 +93,7 @@ export class ButtonAddDogComponent {
       }),
       tap(() => {
         this.loading.set(false);
-        this.close.emit();
+        this.close.emit(); 
       }),
       catchError(err => {
         console.error('Error al añadir perro:', err);
@@ -92,7 +103,7 @@ export class ButtonAddDogComponent {
       })
     ).subscribe();
   }
-  
+
   cancel() {
     this.close.emit();
   }

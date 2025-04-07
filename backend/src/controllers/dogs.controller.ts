@@ -8,7 +8,7 @@ export const addDog = async (req: Request, res: Response) => {
 
   try {
     const { name, gender, breed, birthday, size, photo, personality, castrated } = authReq.body;
-    const userId = authReq.user._id;
+    const userId = authReq.user.id;
 
     if (!name || !gender || !breed || !birthday || !size || !personality || personality.length === 0) {
       res.status(400).json({ error: "Todos los campos del perro son obligatorios, incluyendo personalidad." });
@@ -106,23 +106,31 @@ export const updateDog = async (req: Request, res: Response) => {
 };
 
 export const deleteDog = async (req: Request, res: Response) => {
+  const authReq = req as AuthenticatedRequest;
+  const { id } = req.params;
+  const userId = authReq.user.id;
+
   try {
-    const { id } = req.params;
+    const dog = await Dog.findById(id);
 
-    const deletedDog = await Dog.findByIdAndDelete(id);
-    if (!deletedDog) {
+    if (!dog) {
       res.status(404).json({ error: "Perro no encontrado" });
-      return;
+      return
     }
-
-    res.status(200).json({ message: "Perro eliminado correctamente" });
-    return;
+    if (dog.owner.toString() !== userId) {
+       res.status(403).json({ error: "No tienes permiso para eliminar este perro" });
+       return
+    }
+    await User.findByIdAndUpdate(userId, { $pull: { dogs: dog._id } });
+    await dog.deleteOne();
+   res.status(200).json({ message: `Perro ${dog.name} eliminado correctamente` });
+   return
   } catch (error) {
     console.error("Error en deleteDog:", error);
     res.status(500).json({ error: "Error al eliminar el perro" });
-    return;
+    return
   }
-}
+};
 export const uploadDogPhoto = async (req: Request, res: Response) => {
   try {
     const dog = await Dog.findById(req.params.id);

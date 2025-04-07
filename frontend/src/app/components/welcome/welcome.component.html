@@ -15,7 +15,7 @@
       </p>
 
       @if (authService.isAuthenticated()) {
-        <p class="text-white md:text-gray-800 text-3xl font-bold animate-fade-up mt-6 text-center w-full">
+        <p class="text-white md:text-gray-800 text-3xl font-bold animate-fade-up mt-6 w-full text-center lg:text-left lg:items-start">
           ¿Damos un paseo con {{ userService.dogNames() || 'tu peludo' }}? 
           <span>💜</span>
         </p>
