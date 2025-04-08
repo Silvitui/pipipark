@@ -1,13 +1,110 @@
-<dialog #customModal class="modal">
-  <div class="modal-box w-[90%] max-w-[300px] sm:max-w-[400px] mx-auto p-6 rounded-lg shadow-lg bg-white">
-    <h3 class="text-lg font-bold">{{ selectedPipican?.name }}</h3> 
-    <p class="py-4">
-      <strong>Barrio:</strong> {{ selectedPipican?.barrio }}
-    </p>
-    <div class="modal-action">
-      <button class="btn bg-blue-500 text-white hover:bg-blue-600" (click)="closeModal()">
-        Cerrar
-      </button>
+<dialog [open]="showModalSignal()" class="modal">
+  <div class="modal-box w-[90%] max-w-[400px] max-h-[90vh] overflow-y-auto mx-auto p-6 rounded-lg shadow-lg bg-white">
+    <h3 class="text-lg font-bold">{{ selectedPipican()?.name }}</h3>
+    <p class="py-2"><strong>Barrio:</strong> {{ selectedPipican()?.barrio }}</p>
+
+    <div class="mt-4">
+      <h4 class="text-md font-semibold mb-2"> Perros en este pipicán:</h4>
+
+      @if (isLoading()) {
+        <div class="text-gray-400 italic">Cargando...</div>
+      } @else {
+        @if (dogsInPark().length === 0) {
+          <div class="text-gray-500 italic">No hay perros registrados en este momento.</div>
+        } @else {
+          <div class="space-y-4 max-h-60 overflow-y-auto pr-1">
+            @for (visit of dogsInPark(); track visit.user._id) {
+              <p class="text-sm font-medium text-purple-600 mb-1"> {{ visit.user.name }}</p>
+              <div class="flex flex-col gap-3">
+                @for (dog of visit.dogs; track dog._id) {
+                  <div class="flex items-center gap-4 bg-gray-50 rounded-xl p-3 shadow border w-full">
+                    <img [src]="dog.photo" alt="{{ dog.name }}" class="w-14 h-14 rounded-full object-cover border-2 border-purple-400 shrink-0" />
+                    <div class="flex-1">
+                      <p class="font-bold text-sm mb-1">{{ dog.name }}</p>
+                      
+                      @if (getCompatibilityForDog(dog.name) !== null) {
+                        <div class="w-full h-3 bg-gray-200 rounded-full overflow-hidden mt-1">
+                          <div
+                            class="h-full rounded-full text-[10px] text-white text-center leading-3"
+                            [ngStyle]="{
+                              width: getCompatibilityForDog(dog.name) + '%',
+                              backgroundColor: getCompatibilityColor(getCompatibilityForDog(dog.name))
+                            }"
+                          >
+                            {{ getCompatibilityForDog(dog.name) }}%
+                          </div>
+                        </div>
+                      } @else {
+                        <p class="text-xs text-gray-400 italic">Sin datos de compatibilidad</p>
+                      }
+                    </div>
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        }
+      }
+
+      @if (!isCheckedIn()) {
+        <div class="mt-6 border-t pt-4">
+          <h4 class="text-md font-semibold mb-2"> ¿Con qué perrito entras?</h4>
+          
+          @if (userDogs().length > 0) {
+            <div class="flex flex-col gap-2">
+              @for (dog of userDogs(); track dog._id) {
+                <label class="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    [value]="dog._id"
+                    (change)="toggleDogSelection(dog._id)"
+                    [checked]="dogsToCheckIn().includes(dog._id)"
+                  />
+                  <span>{{ dog.name }}</span>
+                </label>
+              }
+            </div>
+          } @else {
+            <div class="text-sm text-gray-500 italic">
+              No tienes perros registrados aún.
+            </div>
+          }
+
+          <div class="mt-4 flex flex-col gap-2">
+            <button
+  [disabled]="dogsToCheckIn().length === 0"
+  (click)="checkIn()"
+  class="px-4 py-1 text-sm rounded-full bg-purple-100 text-purple-700 hover:bg-purple-200 border border-purple-300 shadow-sm transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+>
+   Estamos aquí
+</button>
+
+          </div>
+        </div>
+      } @else {
+        <div class="mt-6 border-t pt-4 text-center">
+          <h4 class="text-md font-semibold mb-2">Ya estás en este pipicán</h4>
+          <button
+          (click)="checkOut()"
+          class="px-4 py-1 text-sm rounded-xl bg-red-100 text-red-600 hover:bg-red-200 border border-red-300 shadow-sm transition-all duration-200"
+        >
+           Nos vamos
+        </button>
+        
+        </div>
+      }
+    </div>
+
+    <div class="mt-6 text-center">
+      
+      <button
+      class="px-4 py-1 text-sm rounded-xl bg-purple-100 text-purple-700 hover:bg-purple-200 border border-purple-300 shadow-sm transition-all duration-200"
+      (click)="closeModal()"
+    >
+      Cerrar
+    </button>
+    
+    
     </div>
   </div>
 </dialog>

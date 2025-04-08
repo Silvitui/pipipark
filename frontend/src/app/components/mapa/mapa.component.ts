@@ -21,7 +21,7 @@ import { environment } from '../../../environments/environment';
 export class MapaComponent implements AfterViewInit {
   map!: mapboxgl.Map;
   pipicanService = inject(PipicanService);
-  selectedPipican = signal<{ name: string; barrio: string } | null>(null);
+  selectedPipican = signal<{ name: string; barrio: string; _id: string } | null>(null);
   searchTerm: string = '';
   allPipicans: Pipican[] = [];
 
@@ -71,7 +71,12 @@ export class MapaComponent implements AfterViewInit {
       .addTo(this.map)
       .getElement()
       .addEventListener('click', () => {
-        this.selectedPipican.set({ name: pipican.name ?? '', barrio: pipican.barrio ?? '' });
+        this.selectedPipican.set({
+          name: pipican.name ?? '',
+          barrio: pipican.barrio ?? '',
+          _id: pipican._id
+        });
+        
       });
   }
   filteredPipicans(): Pipican[] {
@@ -102,6 +107,11 @@ export class MapaComponent implements AfterViewInit {
   }
   goToPipican(pipican: Pipican): void {
     this.map.flyTo({ center: pipican.coords, zoom: 15 });
-    this.selectedPipican.set({ name: pipican.name ?? '', barrio: pipican.barrio ?? '' });
+    this.selectedPipican.set({
+      name: pipican.name ?? '',
+      barrio: pipican.barrio ?? '',
+      _id: pipican._id
+    });
+    
   }
 }

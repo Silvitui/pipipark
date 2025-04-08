@@ -4,6 +4,6 @@ import { checkInPark, checkOutPark, getDogsInPark } from "../controllers/park.co
 
 const parksRouter = express.Router();
 parksRouter.get("/:id",getDogsInPark);
-parksRouter.get("/id",checkInPark);
-parksRouter.get("/id",checkOutPark);
+parksRouter.post("/checkin",checkInPark);
+parksRouter.post("/checkout",checkOutPark);
 export default parksRouter;
