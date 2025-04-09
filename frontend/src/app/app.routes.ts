@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
-import { LoginLayoutComponent } from './components/layouts/login-layout/login-layout.component';
-import { RegisterLayoutComponent } from './components/layouts/register-layout/register-layout.component';
 import { MainLayoutComponent } from './components/layouts/main-layout/main-layout.component';
+import { AuthLayoutComponent } from './components/layouts/auth-layout/auth-layout.component';
 
 export const routes: Routes = [
   {
@@ -38,7 +37,7 @@ export const routes: Routes = [
   },
   {
     path: 'login',
-    component: LoginLayoutComponent,
+    component: AuthLayoutComponent,
     children: [
       {
         path: '',
@@ -51,7 +50,7 @@ export const routes: Routes = [
   },
   {
     path: 'register',
-    component: RegisterLayoutComponent,
+    component: AuthLayoutComponent,
     children: [
       {
         path: '',

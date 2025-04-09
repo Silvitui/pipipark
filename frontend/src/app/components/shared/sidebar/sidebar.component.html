@@ -1,8 +1,8 @@
 <button 
-  class="absolute top-4 transition-transform duration-300 hover:scale-110 z-[9999] rounded-full bg-white shadow-lg border-2 border-gray-300 w-12 h-12 flex items-center justify-center"
+  class="fixed top-4 transition-transform duration-300 hover:scale-110 z-[9999] rounded-full bg-white shadow-lg border-2 border-gray-300 w-12 h-12 flex items-center justify-center"
   (click)="toggleSidebar()"
   [attr.aria-label]="isOpen() ? 'Cerrar menú' : 'Abrir menú'"
-  [ngClass]="{ 'left-60 rotate-0': isOpen(), 'left-2 rotate-180': !isOpen() }"
+  [ngClass]="{ 'left-[232px] rotate-0': isOpen(), 'left-2 rotate-180': !isOpen() }"
 >
   <img 
     src="assets/paaaw.svg" 

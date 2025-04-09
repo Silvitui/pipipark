@@ -1,6 +1,6 @@
-<div class="card w-full h-full border border-gray-200 rounded-xl shadow-lg bg-white overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-105 cursor-pointer flex flex-col justify-between">
+<div class="w-full h-full flex flex-col justify-between">
 
-
+  <!-- Imagen -->
   <div class="relative group">
     <img
       [src]="previewUrl() || dog.photo || 'assets/dog-placeholder.jpg'"
@@ -23,8 +23,11 @@
     </div>
   </div>
 
+  <!-- Contenido -->
   <div class="p-5 space-y-4 flex-grow">
     <div class="space-y-3">
+      
+      <!-- Raza -->
       <div class="flex items-start gap-3">
         <fa-icon [icon]="['fas', 'dog']" class="text-purple-500 mt-0.5 flex-shrink-0"></fa-icon>
         <div class="flex-1">
@@ -34,13 +37,14 @@
           } @else {
             <input 
               [(ngModel)]="form().breed" 
-              class="input input-xs input-bordered w-full mt-1 transition-all duration-200" 
+              class="input input-xs input-bordered w-full mt-1" 
               placeholder="Ej: Labrador"
             />
           }
         </div>
       </div>
 
+      <!-- Nacimiento -->
       <div class="flex items-start gap-3">
         <fa-icon [icon]="['fas', 'calendar-day']" class="text-purple-500 mt-0.5 flex-shrink-0"></fa-icon>
         <div class="flex-1">
@@ -51,12 +55,13 @@
             <input 
               type="date" 
               [(ngModel)]="form().birthday" 
-              class="input input-xs input-bordered w-full mt-1 transition-all duration-200"
+              class="input input-xs input-bordered w-full mt-1"
             />
           }
         </div>
       </div>
 
+      <!-- Tamaño/Género -->
       <div class="flex items-start gap-3">
         <fa-icon [icon]="['fas', 'ruler-combined']" class="text-purple-500 mt-0.5 flex-shrink-0"></fa-icon>
         <div class="flex-1">
@@ -82,6 +87,7 @@
         </div>
       </div>
 
+      <!-- Castrado -->
       <div class="flex items-start gap-3">
         <fa-icon [icon]="['fas', 'check-circle']" class="text-purple-500 mt-0.5 flex-shrink-0"></fa-icon>
         <div class="flex-1">
@@ -89,7 +95,7 @@
           @if (!editing()) {
             <p class="font-medium">{{ dog.castrated ? 'Sí' : 'No' }}</p>
           } @else {
-            <select [(ngModel)]="form().castrated" class="select select-xs select-bordered w-full mt-1 transition-all duration-200">
+            <select [(ngModel)]="form().castrated" class="select select-xs select-bordered w-full mt-1">
               <option [ngValue]="true">Sí</option>
               <option [ngValue]="false">No</option>
             </select>
@@ -98,6 +104,7 @@
       </div>
     </div>
 
+    <!-- Personalidad -->
     <div class="border-t border-gray-100 pt-4">
       <label class="text-xs text-gray-500 flex items-center gap-2 mb-2">
         <fa-icon [icon]="['fas', 'heart']" class="text-purple-500"></fa-icon>
@@ -124,12 +131,12 @@
             </span>
             <fa-icon 
               [icon]="['fas', showPersonalityOptions() ? 'chevron-up' : 'chevron-down']" 
-              class="text-gray-500 transition-transform"
+              class="text-gray-500"
             ></fa-icon>
           </div>
 
           @if (showPersonalityOptions()) {
-            <div class="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg p-2 max-h-[15rem] overflow-y-auto transition-all duration-200">
+            <div class="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg p-2 max-h-[15rem] overflow-y-auto">
               <div class="grid grid-cols-2 gap-2">
                 @for (trait of personalityOptions; track trait) {
                   <label class="flex items-center gap-2 text-sm cursor-pointer p-1 hover:bg-purple-50 rounded">
@@ -148,33 +155,9 @@
         </div>
       }
     </div>
-
-    @if (editing()) {
-      <div class="border-t border-gray-100 pt-4">
-        <label class="text-xs text-gray-500 mb-2 block">Cambiar foto</label>
-        <div class="flex gap-2">
-          <input 
-            type="file" 
-            (change)="onFileSelected($event)" 
-            class="file-input file-input-xs file-input-bordered w-full" 
-            accept="image/*"
-          />
-          <button
-            class="btn btn-xs btn-primary"
-            (click)="onUpload()"
-            [disabled]="!selectedFile() || loading()"
-          >
-            @if (loading()) {
-              <fa-icon [icon]="['fas', 'spinner']" class="animate-spin mr-1"></fa-icon> Subiendo...
-            } @else {
-              Subir
-            }
-          </button>
-        </div>
-      </div>
-    }
   </div>
 
+  <!-- Botones de edición -->
   <div class="flex justify-end gap-2 p-4 border-t border-gray-100">
     @if (!editing()) {
       <button class="btn btn-sm btn-outline btn-primary" (click)="startEditing()">

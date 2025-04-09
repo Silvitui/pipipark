@@ -18,7 +18,7 @@ import { DeleteDogComponent } from '../delete-dog/delete-dog.component';
 @Component({
   selector: 'app-perfil',
   standalone: true,
-  imports: [CommonModule, FormsModule, MobileSidebarComponent,SidebarComponent,DogCardComponent,MiniDogCardComponent,ButtonAddDogComponent,DeleteDogComponent],
+  imports: [CommonModule, FormsModule,DogCardComponent,ButtonAddDogComponent,DeleteDogComponent],
   templateUrl: './perfil.component.html',
 })
 export class PerfilComponent implements OnInit {
@@ -152,7 +152,7 @@ showDeleteModal = signal(false);
         this.selectedDogToDelete.set(null);
       },
       error: (err) => {
-        console.error('❌ Error al eliminar el perro:', err);
+        console.error('Error al eliminar el perro:', err);
       }
     });
   }

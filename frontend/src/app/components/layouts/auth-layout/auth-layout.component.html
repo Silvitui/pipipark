@@ -1,0 +1,16 @@
+<div
+  class="relative flex flex-col min-h-screen overflow-hidden transition-colors duration-500"
+  [class.bg-[#e7e5e4]]="!imageLoaded()"
+  [class.bg-transparent]="imageLoaded()"
+>
+  <img
+    [src]="isMobile() ? 'assets/fondo-movil.png' : 'assets/fondo-escritorio4.png'"
+    class="absolute inset-0 w-full h-full object-cover -z-10 transition-opacity duration-700 ease-in-out"
+    (load)="onLoad()"
+    [class.opacity-0]="!imageLoaded()"
+    [class.-scale-x-100]="isRegister()"
+    alt="Fondo de ConnectaPet"
+  />
+
+  <router-outlet></router-outlet>
+</div>

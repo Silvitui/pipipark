@@ -15,12 +15,6 @@
     transform: translateY(0) scale(1);
   }
 }
-.register-wrapper {
-  position: relative;
-  width: 100%;
-  height: 100vh;
-  overflow: hidden;
-}
 
 
 
@@ -62,3 +56,8 @@
 
 
 }
+.register-wrapper {
+  height: 100vh;
+  overflow: hidden;
+}
+
