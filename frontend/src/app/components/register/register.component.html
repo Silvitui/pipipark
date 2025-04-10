@@ -1,11 +1,9 @@
 <div class="flex justify-center items-center min-h-screen px-4 sm:px-6 relative z-10">
   <div
-  class="w-full max-w-sm lg:max-w-md p-4 sm:p-6 bg-white bg-opacity-40 rounded-2xl border border-purple-100 shadow-2xl
-         translate-y-0 sm:translate-y-0 -translate-y-14 sm:-translate-y-28 lg:translate-y-0 overflow-hidden"
+    class="w-full max-w-sm lg:max-w-md p-4 sm:p-6 bg-white bg-opacity-40 rounded-2xl border border-purple-100 shadow-2xl -translate-y-24 sm:-translate-y-24 lg:translate-y-0 overflow-hidden"
     [ngClass]="animationClass()"
     (animationend)="onAnimationEnd()"
   >
-
     <button
       (click)="goToHome()"
       class="btn btn-circle btn-outline absolute top-4 right-4 hover:bg-purple-500 hover:text-white transition"
@@ -51,25 +49,18 @@
       </div>
     }
 
-    @if (questions[currentStep()].type === 'select') {
-      <select
-        [(ngModel)]="answers()[questions[currentStep()].field]"
-        class="input input-bordered w-full px-3 py-1.5 sm:py-2 mb-3 rounded-md shadow-sm text-xs sm:text-sm"
-      >
-        <option disabled value="">Selecciona una opción</option>
-        @for (opt of questions[currentStep()].options; track opt) {
-          <option [value]="opt">{{ opt }}</option>
-        }
-      </select>
-    }
-
     @if (['text','email','password'].includes(questions[currentStep()].type)) {
       <input
-        type="{{ questions[currentStep()].type }}"
+        [type]="questions[currentStep()].type"
         [(ngModel)]="answers()[questions[currentStep()].field]"
-        class="input input-bordered w-full px-3 py-2 mb-3 rounded-lg shadow-sm text-sm"
+        class="input input-bordered w-full px-3 py-2 mb-1 rounded-lg shadow-sm text-sm"
         placeholder="Escribe aquí..."
-        (keyup.enter)="nextStep()" />
+        (keyup.enter)="nextStep()"
+        [ngClass]="{ 'border-red-500': getError(questions[currentStep()].field) }"
+      />
+      @if (getError(questions[currentStep()].field)) {
+        <span class="text-red-500 text-xs mt-1 block">{{ getError(questions[currentStep()].field) }}</span>
+      }
     }
 
     @if (questions[currentStep()].type === 'date') {
@@ -77,39 +68,36 @@
         type="date"
         [ngModel]="formattedDate()"
         (ngModelChange)="handleDateChange($event)"
-        class="input input-bordered w-full px-3 py-2 mb-3 rounded-lg shadow-sm text-sm"
-        (keyup.enter)="nextStep()" />
-    }
-
-    @if (questions[currentStep()].type === 'size') {
-      <input
-        type="text"
-        [(ngModel)]="answers()[questions[currentStep()].field]"
-        class="input input-bordered w-full px-3 py-2 mb-3 rounded-lg shadow-sm text-sm"
-        placeholder="Pequeño, mediano, grande..."
-        (keyup.enter)="nextStep()" />
+        class="input input-bordered w-full px-3 py-2 mb-1 rounded-lg shadow-sm text-sm"
+        (keyup.enter)="nextStep()"
+        [ngClass]="{ 'border-red-500': getError(questions[currentStep()].field) }"
+      />
+      @if (getError(questions[currentStep()].field)) {
+        <span class="text-red-500 text-xs mt-1 block">{{ getError(questions[currentStep()].field) }}</span>
+      }
     }
 
     @if (questions[currentStep()].field === 'personality') {
-      <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-3 text-xs sm:text-sm">
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-1 text-xs sm:text-sm">
         @for (option of personalityOptions(); track option) {
-          <label
-            class="flex items-center bg-purple-100 hover:bg-purple-200 text-purple-900 font-medium py-1 px-2 rounded-md cursor-pointer transition">
+          <label class="flex items-center bg-purple-100 hover:bg-purple-200 text-purple-900 font-medium py-1 px-2 rounded-md cursor-pointer transition">
             <input
               type="checkbox"
               (change)="addPersonality(option)"
               [checked]="answers()['personality']?.includes(option)"
-              class="checkbox checkbox-xs checkbox-primary" />
+              class="checkbox checkbox-xs checkbox-primary"
+            />
             <span class="ml-2">{{ option }}</span>
           </label>
         }
       </div>
+      @if (getError('personality')) {
+        <span class="text-red-500 text-xs mt-1 block">{{ getError('personality') }}</span>
+      }
     }
+
     @if (questions[currentStep()].type === 'file') {
-      <label
-        for="file-upload"
-        class="block w-full text-center text-purple-600 border-2 border-dashed border-purple-300 py-3 rounded-lg cursor-pointer hover:bg-purple-50 mb-3 text-sm"
-      >
+      <label for="file-upload" class="block w-full text-center text-purple-600 border-2 border-dashed border-purple-300 py-3 rounded-lg cursor-pointer hover:bg-purple-50 mb-1 text-sm">
         📷 Haz clic aquí para subir una foto
       </label>
       <input type="file" id="file-upload" (change)="handleFileInput($event)" class="hidden" />
@@ -117,10 +105,10 @@
 
     <div class="flex justify-between mt-4 space-x-2">
       @if (currentStep() > 0) {
-        <button class="btn bg-white border border-purple-400 text-purple-800 hover:bg-purple-100 text-sm py-1 px-3" (click)="prevStep()">← Atrás</button>
+        <button class="btn bg-white border border-purple-400 text-purple-800 hover:bg-purple-100 text-sm py-1 px-3" (click)="prevStep()">&larr; Atrás</button>
       }
       @if (currentStep() < questions.length - 1) {
-        <button class="btn bg-gray-600 text-white hover:bg-purple-500 text-sm py-1 px-3" (click)="nextStep()">Siguiente →</button>
+        <button class="btn bg-gray-600 text-white hover:bg-purple-500 text-sm py-1 px-3" (click)="nextStep()">Siguiente &rarr;</button>
       }
       @if (currentStep() === questions.length - 1) {
         <button class="btn bg-gray-600 text-white hover:bg-purple-500 text-sm py-1 px-3" (click)="submitForm()">✨ Finalizar</button>

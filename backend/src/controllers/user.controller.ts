@@ -7,9 +7,6 @@ import bcrypt from 'bcryptjs';
 
 export const updateUser = async (req: Request, res: Response) => {
   const authReq = req as AuthenticatedRequest;
-
-  console.log('🧪 authReq.user:', authReq.user);
-
   try {
     const userId = authReq.user.id;
 
@@ -17,7 +14,6 @@ export const updateUser = async (req: Request, res: Response) => {
       res.status(401).json({ error: "Usuario no autenticado correctamente" });
       return;
     }
-
     const { userName, email, dogId, dogData } = req.body;
 
     const existingUser = await User.findById(userId).populate("dogs");

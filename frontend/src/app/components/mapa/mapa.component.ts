@@ -2,13 +2,9 @@ import { Component, AfterViewInit, inject, signal, effect } from '@angular/core'
 import * as mapboxgl from 'mapbox-gl';
 import { PipicanService } from '../../services/pipican.service';
 import { Pipican } from '../../interfaces/pipican';
-
 import { ModalComponent } from "../../modal/modal.component";
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { SidebarComponent } from "../shared/sidebar/sidebar.component";
-import { FooterComponent } from "../shared/footer/footer.component";
-import { MobileSidebarComponent } from "../shared/mobile-sidebar/mobile-sidebar.component";
 import { environment } from '../../../environments/environment';
 
 @Component({
@@ -24,6 +20,8 @@ export class MapaComponent implements AfterViewInit {
   selectedPipican = signal<{ name: string; barrio: string; _id: string } | null>(null);
   searchTerm: string = '';
   allPipicans: Pipican[] = [];
+  showSearchBar: boolean = false;
+  showResults: boolean = false;
 
   ngAfterViewInit(): void {
     this.initializeMap();
@@ -76,42 +74,40 @@ export class MapaComponent implements AfterViewInit {
           barrio: pipican.barrio ?? '',
           _id: pipican._id
         });
-        
       });
   }
+
   filteredPipicans(): Pipican[] {
     if (!this.searchTerm.trim()) {
-      return this.allPipicans;
+      return [];
     }
   
     const searchTermLower = this.searchTerm.toLowerCase();
-    const filtered = this.allPipicans.filter((pipican) =>
-      (pipican.name ?? '').toLowerCase().includes(searchTermLower) ||
-      (pipican.barrio ?? '').toLowerCase().includes(searchTermLower)
-    );
-    if (filtered.length <= 5) {
-      return filtered;
-    }
-
-    const firstFive = filtered.slice(0, 5);
-  
-    const bestMatch = filtered.find((pipican) =>
-      (pipican.name ?? '').toLowerCase() === searchTermLower ||
-      (pipican.barrio ?? '').toLowerCase() === searchTermLower
-    );
-    if (bestMatch && !firstFive.includes(bestMatch)) {
-      firstFive.push(bestMatch);
-    }
-  
-    return firstFive;
+    return this.allPipicans
+      .filter((pipican) =>
+        (pipican.name ?? '').toLowerCase().includes(searchTermLower) ||
+        (pipican.barrio ?? '').toLowerCase().includes(searchTermLower)
+      )
+      .slice(0, 5);
   }
+
   goToPipican(pipican: Pipican): void {
-    this.map.flyTo({ center: pipican.coords, zoom: 15 });
+    this.map.flyTo({ 
+      center: pipican.coords, 
+      zoom: 15,
+      essential: true
+    });
     this.selectedPipican.set({
       name: pipican.name ?? '',
       barrio: pipican.barrio ?? '',
       _id: pipican._id
     });
-    
+    this.showResults = false;
+    this.showSearchBar = false;
+  }
+
+  toggleSearch(): void {
+    this.showSearchBar = !this.showSearchBar;
+    this.showResults = this.showSearchBar && this.searchTerm.trim() !== '';
   }
 }

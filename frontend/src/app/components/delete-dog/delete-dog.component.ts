@@ -6,7 +6,7 @@ import { Dog } from '../../interfaces/dog.interface';
 @Component({
   selector: 'app-delete-dog-component',
   standalone: true,
-  imports: [CommonModule,DeleteDogComponent],
+  imports: [CommonModule],
   templateUrl: './delete-dog.component.html',
   styleUrls: ['./delete-dog.component.scss'],
 })

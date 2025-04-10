@@ -13,28 +13,39 @@ import { ParkVisitType } from '../interfaces/parkVisitType';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../services/user.service';
 import { Dog } from '../interfaces/dog.interface';
+import { TimeSelectorToastComponent } from '../components/time-selector-toast/time-selector-toast.component';
 
 @Component({
   selector: 'app-modal',
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.scss'],
   standalone: true,
-  imports: [CommonModule]
+  imports: [CommonModule, TimeSelectorToastComponent]
 })
 export class ModalComponent {
-  selectedPipican = model<{ name: string; barrio: string; _id: string } | null>(null)
-   pipicanService = inject(PipicanService);
-   userService = inject(UserService);
-   compatibilityService = inject(CompatibilityService);
+  selectedPipican = model<{ name: string; barrio: string; _id: string } | null>(null);
+
+  pipicanService = inject(PipicanService);
+  userService = inject(UserService);
+  compatibilityService = inject(CompatibilityService);
+
   dogsInPark = signal<ParkVisitType[]>([]);
   userDogs = signal<Dog[]>([]);
   dogsToCheckIn = signal<string[]>([]);
   isLoading = signal(false);
   compatibilityResults = signal<{ name: string; compatibility: number }[]>([]);
-  lastCheckedInParkId = signal<string | null>(localStorage.getItem('lastCheckedInParkId'));
-
-  isCheckedIn = computed(() => this.lastCheckedInParkId() === this.selectedPipican()?._id);
   showModalSignal = signal(false);
+  showTimeSelector = signal(false);
+
+  lastCheckedIn = signal<{ parkId: string; userId: string } | null>(
+    JSON.parse(localStorage.getItem('lastCheckIn') || 'null')
+  );
+
+  isCheckedIn = computed(() => {
+    const currentUser = this.userService.getUser();
+    const last = this.lastCheckedIn();
+    return !!currentUser && last?.parkId === this.selectedPipican()?._id && last?.userId === currentUser?._id;
+  });
 
   constructor() {
     effect(() => {
@@ -46,14 +57,17 @@ export class ModalComponent {
       }
     });
 
-    // Efecto para persistir el último park ID
     effect(() => {
-      const id = this.lastCheckedInParkId();
-      id ? localStorage.setItem('lastCheckedInParkId', id) : localStorage.removeItem('lastCheckedInParkId');
+      const last = this.lastCheckedIn();
+      if (last) {
+        localStorage.setItem('lastCheckIn', JSON.stringify(last));
+      } else {
+        localStorage.removeItem('lastCheckIn');
+      }
     });
   }
 
-loadDogs(parkId: string) {
+  loadDogs(parkId: string) {
     this.isLoading.set(true);
     this.pipicanService.getDogsInPipican(parkId).subscribe({
       next: (res) => {
@@ -71,7 +85,7 @@ loadDogs(parkId: string) {
     });
   }
 
- loadUserDogs() {
+  loadUserDogs() {
     this.userService.loadUserDogs().subscribe({
       next: (dogs) => {
         this.userDogs.set(dogs.dogs);
@@ -87,27 +101,44 @@ loadDogs(parkId: string) {
   }
 
   toggleDogSelection(dogId: string) {
-    this.dogsToCheckIn.update(current => 
-      current.includes(dogId) 
-        ? current.filter(id => id !== dogId) 
+    this.dogsToCheckIn.update(current =>
+      current.includes(dogId)
+        ? current.filter(id => id !== dogId)
         : [...current, dogId]
     );
   }
 
-  checkIn() {
+  checkIn(minutes: number) {
     const parkId = this.selectedPipican()?._id;
     const dogIds = this.dogsToCheckIn();
-    if (!parkId || dogIds.length === 0) return;
+    const currentUser = this.userService.getUser();
+    if (!parkId || dogIds.length === 0 || !currentUser) return;
 
-    this.pipicanService.checkIn(parkId, dogIds).subscribe({
-      next: () => {
-        this.lastCheckedInParkId.set(parkId);
+    this.pipicanService.checkIn(parkId, dogIds, minutes).subscribe({
+      next: (res) => {
+        const visit = res.visit;
+        this.lastCheckedIn.set({ parkId, userId: currentUser._id });
+
+        if (minutes > 0) {
+          setTimeout(() => {
+            console.log('🕒 Expiración automática del check-in tras', minutes, 'min');
+            this.checkOut();
+          }, minutes * 60 * 1000);
+        }
+
         this.loadDogs(parkId);
+        this.compatibilityResults.set([]);
       },
       error: (err) => {
         console.error("Error al hacer check-in", err);
       }
     });
+  }
+
+  handleTimeSelection(minutes: number) {
+    console.log('⏳ Tiempo seleccionado:', minutes);
+    this.showTimeSelector.set(false);
+    this.checkIn(minutes);
   }
 
   checkOut() {
@@ -116,7 +147,7 @@ loadDogs(parkId: string) {
 
     this.pipicanService.checkOut(parkId).subscribe({
       next: () => {
-        this.lastCheckedInParkId.set(null);
+        this.lastCheckedIn.set(null);
         this.loadDogs(parkId);
         this.compatibilityResults.set([]);
       },
@@ -130,14 +161,14 @@ loadDogs(parkId: string) {
     const myDog = this.userDogs()[0];
     const parkId = this.selectedPipican()?._id;
     if (!myDog || !parkId) return;
-  
+
     const otherDogs = this.dogsInPark().flatMap(v => v.dogs)
       .filter(d => d._id !== myDog._id)
       .map(d => ({
         name: d.name,
         personality: Array.isArray(d.personality) ? d.personality.join(', ') : d.personality
       }));
-  
+
     this.compatibilityService.checkCompatibility({
       myDog: {
         name: myDog.name,
@@ -170,5 +201,9 @@ loadDogs(parkId: string) {
 
   closeModal() {
     this.showModalSignal.set(false);
+  }
+
+  isOwnDog(dogId: string): boolean {
+    return this.userDogs().some(d => d._id === dogId);
   }
 }

@@ -7,18 +7,37 @@ const DogSchema = new mongoose.Schema({
   birthday: { type: Date, required: true },
   size: { type: String, required: true },
   owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  castrated: { type: Boolean, required: true }, // ✅ NUEVO CAMPO
+  castrated: { type: Boolean, required: true }, 
   personality: {
     type: [String],
     enum: [
-      'aventurero', 'tranquilo', 'protector', 'curioso', 'energético',
-      'gruñón', 'obediente', 'valiente', 'dependiente', 'miedoso',
-      'amistoso', 'perezoso', 'juguetón','inseguro','territorial','sociable','líder','audaz'
+      'aventurero', 'aventurera',
+      'tranquilo', 'tranquila',
+      'protector', 'protectora',
+      'curioso', 'curiosa',
+      'energético', 'energética',
+      'gruñón', 'gruñona',
+      'obediente',
+      'valiente',
+      'cariñoso', 'cariñosa',
+      'miedoso', 'miedosa',
+      'amistoso', 'amistosa',
+      'perezoso', 'perezosa',
+      'juguetón', 'juguetona',
+      'inseguro', 'insegura',
+      'territorial',
+      'sociable',
+      'líder',
+      'audaz'
     ],
     required: true
   },
   
-  photo: { type: String, default: "https://via.placeholder.com/150" },
+  photo: {
+    type: String,
+    default: "https://res.cloudinary.com/dcrpz7yol/image/upload/v1744221861/perrito-default_smy8eu.png"
+  }
+  
 });
 
 

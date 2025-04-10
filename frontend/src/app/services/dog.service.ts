@@ -9,13 +9,6 @@ import { Dog } from '../interfaces/dog.interface';
 export class DogService {
  http = inject(HttpClient);
  apiUrl = 'http://localhost:3000/api'; 
-
-  /**
-   * Sube una imagen para el perro con ID dado.
-   * @param dogId 
-   * @param formData 
-   * @returns 
-   */
   updateDog(dogId: string, data: Partial<Dog>): Observable<{ dog: Dog }> {
     return this.http.put<{ dog: Dog }>(
       `${this.apiUrl}/dogs/${dogId}`,

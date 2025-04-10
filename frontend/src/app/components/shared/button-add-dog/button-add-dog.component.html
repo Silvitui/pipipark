@@ -124,27 +124,26 @@
 
 
       <!-- Foto -->
-      <div>
-        <label class="block text-[8px] md:text-sm font-medium text-gray-700 mb-0.5 md:mb-1">
-          Foto del perro
-        </label>
-        <label class="flex flex-col items-center justify-center border border-dashed border-gray-300 rounded-sm md:rounded-lg p-0.5 md:p-2 cursor-pointer hover:border-purple-400 transition-colors">
-          <span class="text-purple-500 text-[8px] md:text-sm">📸 Subir foto</span>
-          <input
-            type="file"
-            class="hidden"
-            (change)="onFileChange($event)"
-            accept="image/*"
-          />
-          @if (formData().photo) {
-            <img 
-              [src]="previewImage()"
-              alt="Previsualización"
-              class="mt-0.5 md:mt-1 w-8 h-8 md:w-16 md:h-16 object-cover rounded-sm md:rounded-lg"
-            />
-          }
-        </label>
-      </div>
+    <!-- Foto -->
+<div>
+  <label class="block text-[8px] md:text-sm font-medium text-gray-700 mb-0.5 md:mb-1">
+    Foto del perro
+  </label>
+  <label class="flex flex-col items-center justify-center border border-dashed border-gray-300 rounded-sm md:rounded-lg p-0.5 md:p-2 cursor-pointer hover:border-purple-400 transition-colors">
+    <span class="text-purple-500 text-[8px] md:text-sm">📸 Subir foto</span>
+    <input
+      type="file"
+      class="hidden"
+      (change)="onFileChange($event)"
+      accept="image/*"
+    />
+    <img 
+      [src]="previewImage() || 'https://res.cloudinary.com/dcrpz7yol/image/upload/v1744221861/perrito-default_smy8eu.png'"
+      alt="Previsualización"
+      class="mt-0.5 md:mt-1 w-8 h-8 md:w-16 md:h-16 object-cover rounded-sm md:rounded-lg"
+    />
+  </label>
+</div>
 
 <div class="flex flex-col md:flex-row gap-1 md:gap-3 mt-2 md:mt-4 justify-center items-center">
   <button

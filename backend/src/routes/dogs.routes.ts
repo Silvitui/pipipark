@@ -8,5 +8,7 @@ dogsRouter.post("/", addDog);
 dogsRouter.get("/mine", getMyDogs)
 dogsRouter.put("/:id", updateDog);
 dogsRouter.delete("/:id", deleteDog);
-dogsRouter.post("/upload-photo/:id", upload.single('image'), uploadDogPhoto);
+dogsRouter.post( '/upload-photo/:id',upload.single('photo'),uploadDogPhoto
+  );
+  
 export default dogsRouter;

@@ -26,7 +26,7 @@ export class LoginComponent {
         this.router.navigate(['/welcome']); 
       },
       error: (err) => {
-        this.errorMessage.set(" Email o contraseña incorrectos ❌");
+        this.errorMessage.set(" Email o contraseña incorrectos ");
         console.error("Error en el login:", err);
       }
     });

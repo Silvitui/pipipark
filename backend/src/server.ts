@@ -25,22 +25,20 @@ app.use(cookieParser());
 app.use(cors(options));
 app.use(morgan('dev'));
 app.use("/api/auth", authRouter);
-app.use("/api/dogs",authMiddleware, dogsRouter);
-app.use("/api/users",authMiddleware, usersRouter)
-app.use("/api/parks",authMiddleware,parksRouter)
-app.use("/api/stats",authMiddleware,statsRouter)
-app.use('/api/pipicans',authMiddleware, pipicanRouter);
-app.use('/api/compatibility', authMiddleware, compatibilityRoutes);
+app.use("/api/dogs", authMiddleware, dogsRouter);
+app.use("/api/users", authMiddleware, usersRouter);
+app.use("/api/parks", authMiddleware, parksRouter);
+app.use("/api/stats", authMiddleware, statsRouter);
+app.use("/api/pipicans", authMiddleware, pipicanRouter);
+app.use("/api/compatibility", authMiddleware, compatibilityRoutes);
+
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
-// app.use('/uploads', express.static('uploads'));
-
-
 
 app.get('/', (_req: Request, res: Response) => {
-    res.send('🐶 Bienvenido a CONNECTAPET! 🐾🎈🌸🥰');
+  res.send('🐶 Bienvenido a CONNECTAPET! 🐾🎈🌸🥰');
 });
 
 app.listen(PORT, () => {
-    console.log(`🔥 Servidor corriendo en http://localhost:${PORT}`);
-    DBconnection();
+  console.log(`🔥 Servidor corriendo en http://localhost:${PORT}`);
+  DBconnection();
 });

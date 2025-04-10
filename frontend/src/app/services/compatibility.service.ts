@@ -6,8 +6,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class CompatibilityService {
-  private apiUrl = 'http://localhost:3000/api/compatibility';
-  private http = inject(HttpClient);
+ apiUrl = 'http://localhost:3000/api/compatibility';
+http = inject(HttpClient);
 
   checkCompatibility(data: {
     myDog: { name: string; personality: string },

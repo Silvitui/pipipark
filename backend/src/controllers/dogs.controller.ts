@@ -2,6 +2,8 @@ import { Request, Response } from 'express';
 import Dog from '../models/Dog';
 import User from '../models/User';
 import { AuthenticatedRequest } from '../utils/types/types';
+import cloudinary from '../utils/cloudinary';
+import streamifier from 'streamifier';
 
 export const addDog = async (req: Request, res: Response) => {
   const authReq = req as AuthenticatedRequest;
@@ -140,17 +142,35 @@ export const uploadDogPhoto = async (req: Request, res: Response) => {
     }
 
     if (!req.file) {
-       res.status(400).json({ message: 'No se ha enviado ninguna imagen' });
-       return;
+      res.status(400).json({ message: 'No se ha enviado ninguna imagen' });
+      return;
     }
 
-    const baseUrl = `${req.protocol}://${req.get('host')}`;
-    dog.photo = `${baseUrl}/uploads/${req.file.filename}`;
-    await dog.save();    
+    const uploadStream = cloudinary.uploader.upload_stream(
+      {
+        folder: 'connectapet/dogs',
+        public_id: `${dog._id}-${Date.now()}`,
+        resource_type: 'image',
+      },
+      async (error, result) => {
+        if (error || !result) {
+          console.error('Error subiendo a Cloudinary:', error);
+          res.status(500).json({ message: 'Error subiendo a Cloudinary' });
+          return;
+        }
 
-    res.json({ message: 'Foto actualizada correctamente', photo: dog.photo });
+        dog.photo = result.secure_url;
+        await dog.save();
+
+        res.json({ message: 'Foto actualizada correctamente', photo: dog.photo });
+        return;
+      }
+    );
+
+    streamifier.createReadStream(req.file.buffer).pipe(uploadStream);
   } catch (error) {
-    console.error('Error subiendo la foto del perro:', error);
-    res.status(500).json({ message: 'Error subiendo la foto del perro' });
+    console.error('Error general al subir la foto del perro:', error);
+    res.status(500).json({ message: 'Error interno del servidor' });
+    return;
   }
 };

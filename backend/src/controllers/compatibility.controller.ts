@@ -4,8 +4,6 @@ import { AuthenticatedRequest } from '../utils/types/types';
 import CompatibilityResult from '../models/Compatibility';
 import { Dog } from '../interfaces/parkVisit.interface';
 
-// const model = process.env.HF_MODEL as string;
-// const token = process.env.HF_API_KEY as string;
 
 export const checkCompatibility = async (req: Request, res: Response) => {
   const authReq = req as AuthenticatedRequest;
@@ -31,7 +29,7 @@ export const checkCompatibility = async (req: Request, res: Response) => {
     res.status(200).json({ results });
     return 
   } catch (error) {
-    console.error('❌ Error en compatibilidad IA:', error);
+    console.error(' Error en compatibilidad IA:', error);
     res.status(500).json({ error: 'No se pudo calcular compatibilidad' });
     return 
   }
@@ -64,7 +62,7 @@ const callHuggingFace = async (prompt: string) => {
     const data = await response.json();
   
     if (!response.ok) {
-      console.error('❌ Error desde Hugging Face:', data);
+      console.error(' Error desde Hugging Face:', data);
       throw new Error(data.error || 'Fallo al generar texto');
     }
   

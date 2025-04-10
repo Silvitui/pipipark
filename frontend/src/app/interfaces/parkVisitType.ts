@@ -7,4 +7,11 @@ export interface ParkVisitType {
     };
     dogs: Dog[];
   }
-  
+  export interface VisitResponse {
+    _id: string;
+    park: string;
+    user: string;
+    dogs: string[]; 
+    checkedInAt: string;
+    expiresAt?: string;
+  }

@@ -8,18 +8,15 @@ import { AuthenticatedRequest } from '../utils/types/types';
 export const registerUser = async (req: Request, res: Response) => {
     try {
       const { userName, email, password, dog } = req.body;
-  
       if (!userName || !email || !password || !dog) {
         res.status(400).json({ error: "Todos los campos son obligatorios" });
         return;
       }
-  
       const existingUser = await User.findOne({ email });
       if (existingUser) {
         res.status(400).json({ error: "El email ya está registrado. Usa otro." });
         return;
       }
-  
       const hashedPassword = await bcrypt.hash(password, 10);
       const newUser = new User({ userName, email, password: hashedPassword });
       const parsedBirthday = new Date(dog.birthday);
@@ -27,7 +24,6 @@ export const registerUser = async (req: Request, res: Response) => {
         res.status(400).json({ error: "La fecha de nacimiento del perro no es válida." });
         return;
       }
-  
       const newDog = new Dog({
         name: dog.name,
         gender: dog.gender,
@@ -43,7 +39,6 @@ export const registerUser = async (req: Request, res: Response) => {
       const savedDog = await newDog.save();
       newUser.dogs = [savedDog._id];
       await newUser.save();
-  
       // Generar token y enviar cookie
       const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET!, { expiresIn: '1d' });
       res.cookie('token', token, {
@@ -82,7 +77,6 @@ export const loginUser = async (req: Request, res: Response) => {
             res.status(400).json({ error: "Email y contraseña son obligatorios" });
             return 
         }
-
         const user = await User.findOne({ email }).populate('dogs');
         if (!user) {
             res.status(400).json({ error: "Usuario no encontrado" });
@@ -94,7 +88,6 @@ export const loginUser = async (req: Request, res: Response) => {
             res.status(400).json({ error: "Contraseña incorrecta" });
             return 
         }
-
  
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET!, { expiresIn: '1d' });
         res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === "production" });

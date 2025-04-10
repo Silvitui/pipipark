@@ -58,35 +58,35 @@ export class ButtonAddDogComponent {
     });
   }
 
+
   submitForm() {
     this.loading.set(true);
     this.error.set(null);
-
+  
     const fd = this.formData();
-
-   
+  
     if (fd.castrated === null) {
       this.error.set('Por favor, selecciona si tu perro está castrado o no.');
       this.loading.set(false);
       return;
     }
-
+  
     const payload = {
       name: fd.name,
       gender: fd.gender,
       breed: fd.breed,
       birthday: new Date(fd.birthday),
       size: fd.size,
-      castrated: fd.castrated, 
-      personality: fd.personality,
-      photo: ''
+      castrated: fd.castrated,
+      personality: fd.personality
+    
     };
-
+  
     from(this.dogService.addDog(payload)).pipe(
       switchMap((res: any) => {
         if (fd.photo && res?.dog?._id) {
           const form = new FormData();
-          form.append('image', fd.photo);
+          form.append('photo', fd.photo); 
           return this.dogService.uploadDogPhoto(res.dog._id, form);
         }
         return from([null]);
@@ -103,7 +103,7 @@ export class ButtonAddDogComponent {
       })
     ).subscribe();
   }
-
+  
   cancel() {
     this.close.emit();
   }

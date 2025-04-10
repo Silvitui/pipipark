@@ -6,19 +6,16 @@ import { FormsModule } from '@angular/forms';
 import { DogCardComponent } from '../dog-card/dog-card.component';
 import { UserService } from '../../services/user.service';
 import { Dog } from '../../interfaces/dog.interface';
-
-import { SidebarComponent } from '../shared/sidebar/sidebar.component';
-import { MobileSidebarComponent } from '../shared/mobile-sidebar/mobile-sidebar.component';
-import { MiniDogCardComponent } from '../shared/mini-dog-card/mini-dog-card.component';
 import { ButtonAddDogComponent } from '../shared/button-add-dog/button-add-dog.component';
 import { DeleteDogComponent } from '../delete-dog/delete-dog.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 
 
 @Component({
   selector: 'app-perfil',
   standalone: true,
-  imports: [CommonModule, FormsModule,DogCardComponent,ButtonAddDogComponent,DeleteDogComponent],
+  imports: [CommonModule, FormsModule,DogCardComponent,ButtonAddDogComponent,DeleteDogComponent,FontAwesomeModule],
   templateUrl: './perfil.component.html',
 })
 export class PerfilComponent implements OnInit {
@@ -45,7 +42,7 @@ showDeleteModal = signal(false);
   successMessage = signal('');
 
   ngOnInit(): void {
-    this.userService.fetchAndSetUser(); // 👈 Esto es clave para cargar todo
+    this.userService.fetchAndSetUser(); 
 
     const currentUser = this.user();
     if (currentUser) {
@@ -57,7 +54,7 @@ showDeleteModal = signal(false);
   }
   handleDogModalClose() {
     this.addDogOpen.set(false);
-    this.userService.fetchAndSetUser(); // refresca los perros
+    this.userService.fetchAndSetUser(); 
   }
   startEditing() {
     const currentUser = this.user();

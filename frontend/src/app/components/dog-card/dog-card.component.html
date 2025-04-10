@@ -1,12 +1,12 @@
-<div class="w-full h-full flex flex-col justify-between">
+<div class="w-full h-full flex flex-col justify-between cursor-pointer" (click)="selectDog()">
 
-  <!-- Imagen -->
-  <div class="relative group">
+  <div class="relative">
     <img
-      [src]="previewUrl() || dog.photo || 'assets/dog-placeholder.jpg'"
+      [src]="dog.photo || 'https://res.cloudinary.com/dcrpz7yol/image/upload/v1744221861/perrito-default_smy8eu.png'"
       alt="Foto de {{ dog.name }}"
-      class="w-full h-48 object-cover transition-all duration-500 group-hover:scale-105"
+      class="w-full h-48 object-cover transition-all duration-500"
     />
+
     <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
     <div class="absolute bottom-4 left-0 right-0 text-center">
       <h2 class="text-2xl font-bold text-white drop-shadow-lg">
@@ -22,12 +22,8 @@
       </h2>
     </div>
   </div>
-
-  <!-- Contenido -->
   <div class="p-5 space-y-4 flex-grow">
     <div class="space-y-3">
-      
-      <!-- Raza -->
       <div class="flex items-start gap-3">
         <fa-icon [icon]="['fas', 'dog']" class="text-purple-500 mt-0.5 flex-shrink-0"></fa-icon>
         <div class="flex-1">
@@ -43,8 +39,6 @@
           }
         </div>
       </div>
-
-      <!-- Nacimiento -->
       <div class="flex items-start gap-3">
         <fa-icon [icon]="['fas', 'calendar-day']" class="text-purple-500 mt-0.5 flex-shrink-0"></fa-icon>
         <div class="flex-1">
@@ -61,7 +55,7 @@
         </div>
       </div>
 
-      <!-- Tamaño/Género -->
+     
       <div class="flex items-start gap-3">
         <fa-icon [icon]="['fas', 'ruler-combined']" class="text-purple-500 mt-0.5 flex-shrink-0"></fa-icon>
         <div class="flex-1">
@@ -87,7 +81,6 @@
         </div>
       </div>
 
-      <!-- Castrado -->
       <div class="flex items-start gap-3">
         <fa-icon [icon]="['fas', 'check-circle']" class="text-purple-500 mt-0.5 flex-shrink-0"></fa-icon>
         <div class="flex-1">
@@ -103,8 +96,6 @@
         </div>
       </div>
     </div>
-
-    <!-- Personalidad -->
     <div class="border-t border-gray-100 pt-4">
       <label class="text-xs text-gray-500 flex items-center gap-2 mb-2">
         <fa-icon [icon]="['fas', 'heart']" class="text-purple-500"></fa-icon>
@@ -157,10 +148,13 @@
     </div>
   </div>
 
-  <!-- Botones de edición -->
+
   <div class="flex justify-end gap-2 p-4 border-t border-gray-100">
     @if (!editing()) {
-      <button class="btn btn-sm btn-outline btn-primary" (click)="startEditing()">
+      <button 
+        class="btn btn-sm btn-outline btn-primary" 
+        (click)="startEditing(); $event.stopPropagation()"
+      >
         <fa-icon [icon]="['fas', 'pen']"></fa-icon> Editar
       </button>
     } @else {

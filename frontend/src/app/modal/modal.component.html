@@ -1,10 +1,12 @@
 <dialog [open]="showModalSignal()" class="modal">
-  <div class="modal-box w-[90%] max-w-[400px] max-h-[90vh] overflow-y-auto mx-auto p-6 rounded-lg shadow-lg bg-white">
+  <div class="modal-box w-[90%] max-w-[400px] max-h-[90vh] overflow-y-auto mx-auto p-6 rounded-lg shadow-lg bg-white relative">
+    <button class="absolute top-2 right-2 text-gray-400 hover:text-red-500" (click)="closeModal()">✕</button>
+
     <h3 class="text-lg font-bold">{{ selectedPipican()?.name }}</h3>
     <p class="py-2"><strong>Barrio:</strong> {{ selectedPipican()?.barrio }}</p>
 
     <div class="mt-4">
-      <h4 class="text-md font-semibold mb-2"> Perros en este pipicán:</h4>
+      <h4 class="text-md font-semibold mb-2">Perros en este pipicán:</h4>
 
       @if (isLoading()) {
         <div class="text-gray-400 italic">Cargando...</div>
@@ -22,7 +24,7 @@
                     <div class="flex-1">
                       <p class="font-bold text-sm mb-1">{{ dog.name }}</p>
                       
-                      @if (getCompatibilityForDog(dog.name) !== null) {
+                      @if (!isOwnDog(dog._id) && getCompatibilityForDog(dog.name) !== null) {
                         <div class="w-full h-3 bg-gray-200 rounded-full overflow-hidden mt-1">
                           <div
                             class="h-full rounded-full text-[10px] text-white text-center leading-3"
@@ -46,10 +48,11 @@
         }
       }
 
+      <!-- Entrada/Salida -->
       @if (!isCheckedIn()) {
         <div class="mt-6 border-t pt-4">
-          <h4 class="text-md font-semibold mb-2"> ¿Con qué perrito entras?</h4>
-          
+          <h4 class="text-md font-semibold mb-2">¿Con qué perrito entras?</h4>
+
           @if (userDogs().length > 0) {
             <div class="flex flex-col gap-2">
               @for (dog of userDogs(); track dog._id) {
@@ -72,39 +75,32 @@
 
           <div class="mt-4 flex flex-col gap-2">
             <button
-  [disabled]="dogsToCheckIn().length === 0"
-  (click)="checkIn()"
-  class="px-4 py-1 text-sm rounded-full bg-purple-100 text-purple-700 hover:bg-purple-200 border border-purple-300 shadow-sm transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
->
-   Estamos aquí
-</button>
-
+              [disabled]="dogsToCheckIn().length === 0"
+              (click)="showTimeSelector.set(true)"
+              class="px-4 py-2 text-sm rounded-full bg-purple-100 text-purple-700 hover:bg-purple-200 border border-purple-300 shadow-sm transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Entramos 🐶
+            </button>
           </div>
         </div>
       } @else {
         <div class="mt-6 border-t pt-4 text-center">
           <h4 class="text-md font-semibold mb-2">Ya estás en este pipicán</h4>
           <button
-          (click)="checkOut()"
-          class="px-4 py-1 text-sm rounded-xl bg-red-100 text-red-600 hover:bg-red-200 border border-red-300 shadow-sm transition-all duration-200"
-        >
-           Nos vamos
-        </button>
-        
+            (click)="checkOut()"
+            class="px-4 py-2 text-sm rounded-full bg-red-100 text-red-600 hover:bg-red-200 border border-red-300 shadow-sm transition-all duration-200"
+          >
+            Nos vamos 🐾
+          </button>
         </div>
       }
-    </div>
 
-    <div class="mt-6 text-center">
-      
-      <button
-      class="px-4 py-1 text-sm rounded-xl bg-purple-100 text-purple-700 hover:bg-purple-200 border border-purple-300 shadow-sm transition-all duration-200"
-      (click)="closeModal()"
-    >
-      Cerrar
-    </button>
-    
-    
+     
+@if (showTimeSelector()) {
+  <app-time-selector-toast (selected)="handleTimeSelection($event)" />
+}
+
+
     </div>
   </div>
 </dialog>

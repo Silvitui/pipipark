@@ -5,7 +5,6 @@ import User from '../models/User';
 
 export const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   const token = req.cookies.token;
-  console.log("🍪 Token recibido en cookie:", token);
   const secret = process.env.JWT_SECRET as string;
 
   if (!token) {

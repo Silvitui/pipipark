@@ -1,8 +1,5 @@
 <div class="min-h-screen w-full flex flex-col bg-stone-200 relative">
-  <!-- Mobile Sidebar -->
   <app-mobile-sidebar></app-mobile-sidebar>
-
-  <!-- Desktop Sidebar -->
   <div
     class="hidden lg:block fixed top-0 left-0 h-screen w-64 z-50 transition-transform duration-300"
     [ngClass]="{ 'translate-x-0': isSidebarOpen(), '-translate-x-full': !isSidebarOpen() }"
@@ -10,10 +7,7 @@
     <app-sidebar></app-sidebar>
   </div>
 
-  <!-- Main content area -->
   <div class="flex-grow min-h-screen flex flex-col transition-all duration-300">
-    
-    <!-- Aquí aplicamos el desplazamiento dinámico del contenido -->
     <main 
       class="flex-grow transition-all duration-300"
       [ngClass]="{ 'lg:pl-64': isSidebarOpen(), 'lg:pl-0': !isSidebarOpen() }"
@@ -21,7 +15,9 @@
       <router-outlet></router-outlet>
     </main>
 
-    <!-- Footer siempre al 100% -->
-    <app-footer></app-footer>
+    @if (!hideFooter()) {
+      <app-footer></app-footer>
+    }
+    
   </div>
 </div>

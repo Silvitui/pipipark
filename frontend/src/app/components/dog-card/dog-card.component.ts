@@ -1,5 +1,5 @@
 import { DogService } from './../../services/dog.service';
-import { Component, inject, Input, signal } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Dog } from '../../interfaces/dog.interface';
@@ -26,12 +26,17 @@ import {
 })
 export class DogCardComponent {
   @Input() dog!: Dog;
+  @Output() select = new EventEmitter<Dog>();
+
   selectedFile = signal<File | null>(null);
   previewUrl = signal<string | null>(null);
   loading = signal(false);
   editing = signal(false);
   form = signal<Partial<Dog>>({});
-
+  selectDog() {
+    this.select.emit(this.dog);
+  }
+  
   dogService = inject(DogService);
   constructor(library: FaIconLibrary) {
     library.addIcons(

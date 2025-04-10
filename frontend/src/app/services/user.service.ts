@@ -33,6 +33,17 @@ export class UserService {
     this.user.set(null);
     this.dogs.set([]);
   }
+  dogNames = computed(() => {
+    const dogs = this.dogs();
+    const names = dogs.map(d => d.name);
+
+    if (names.length === 0) return '';
+    if (names.length === 1) return names[0];
+    if (names.length === 2) return `${names[0]} y ${names[1]}`;
+
+    const last = names.pop();
+    return `${names.join(', ')} y ${last}`;
+  });
 
   fetchAndSetUser(): void {
     this.loadUserProfile().subscribe({
@@ -66,17 +77,6 @@ export class UserService {
     return this.dogs();
   }
 
-  public dogNames = computed(() => {
-    const dogs = this.dogs();
-    const names = dogs.map(d => d.name);
-
-    if (names.length === 0) return '';
-    if (names.length === 1) return names[0];
-    if (names.length === 2) return `${names[0]} y ${names[1]}`;
-
-    const last = names.pop();
-    return `${names.join(', ')} y ${last}`;
-  });
 
   updateProfile(data: Partial<User>): Observable<{ user: User }> {
     return this.http.put<{ user: User }>(this.userProfileUrl, data, {
