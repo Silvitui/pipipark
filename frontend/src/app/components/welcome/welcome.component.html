@@ -24,11 +24,12 @@
           <p class="text-white xl:text-gray-800 text-xl sm:text-2xl xl:text-3xl font-bold 
                     px-4 py-2 bg-black/50 backdrop-blur-sm rounded-md drop-shadow
                     xl:bg-transparent xl:backdrop-blur-none xl:px-0 xl:py-0 xl:drop-shadow-none">
-            ¿Damos un paseo con {{ userService.dogNames() || 'tu peludo' }}? 
+            ¿Damos un paseo con {{ UserDogService.dogNames() || 'tu peludo' }}? 
             <span>💜</span>
           </p>
 
           <button 
+          (click)="goToMap()"
             class="mt-4 text-sm sm:text-base xl:text-lg px-4 py-2 xl:px-6 xl:py-3 
                    btn rounded-full bg-purple-500 text-white 
                    hover:bg-purple-600 transition-transform transform hover:scale-105 duration-300">

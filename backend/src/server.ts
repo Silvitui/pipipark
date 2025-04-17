@@ -31,6 +31,7 @@ app.use("/api/parks", authMiddleware, parksRouter);
 app.use("/api/stats", authMiddleware, statsRouter);
 app.use("/api/pipicans", authMiddleware, pipicanRouter);
 app.use("/api/compatibility", authMiddleware, compatibilityRoutes);
+app.use("/api/compatibility",authMiddleware, compatibilityRoutes); 
 
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 

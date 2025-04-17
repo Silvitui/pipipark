@@ -1,3 +1,4 @@
+import { UserDogService } from './../../services/user-dog.service';
 import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
@@ -16,15 +17,16 @@ export class WelcomeComponent implements OnInit {
   router = inject(Router);
   authService = inject(AuthService);
   userService = inject(UserService);
+  UserDogService = inject(UserDogService);
 
   showMobileMenu = false;
 
   ngOnInit(): void {
     if (this.authService.isAuthenticated()) {
-      this.userService.fetchAndSetUser();
+      this.userService.fetchUserOnly();
     }
   }
-
+  
   goToLogin(): void {
     this.router.navigate(['/login']);
     this.showMobileMenu = false;

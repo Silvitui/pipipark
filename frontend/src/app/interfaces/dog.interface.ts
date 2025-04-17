@@ -9,3 +9,15 @@ export interface Dog {
   castrated: boolean;
   photo: string;
 }
+
+export interface CompatibilityRequest {
+  dog1Id: string;
+  dog2Id: string;
+}
+
+export interface CompatibilityResponse {
+  name: string;          // el nombre del perro comparado
+  score: number;         // el porcentaje de compatibilidad
+  summary?: string;      // opcional, una frase de resumen
+}
+

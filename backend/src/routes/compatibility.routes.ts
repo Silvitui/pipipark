@@ -1,8 +1,9 @@
 import express from 'express';
-import { checkCompatibility } from '../controllers/compatibility.controller';
+import { getCompatibility } from '../controllers/compatibility.controller';
+
 
 const router = express.Router();
 
-router.post('/', checkCompatibility);
+router.post('/check', getCompatibility);
 
 export default router;

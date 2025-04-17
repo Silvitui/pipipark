@@ -1,94 +1,52 @@
-import { Injectable, signal, computed, inject } from '@angular/core';
+// user.service.ts
+import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../interfaces/user.interface';
-import { Dog } from '../interfaces/dog.interface';
 import { ChangePasswordDTO } from '../interfaces/password.interface';
-
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  apiUrl = 'http://localhost:3000/api';
-  userProfileUrl = `${this.apiUrl}/users/profile`;
-  userDogsUrl = `${this.apiUrl}/dogs/mine`;
-  http = inject(HttpClient);
+   http = inject(HttpClient);
+   apiUrl = 'http://localhost:3000/api/users/profile';
+   passwordUrl = 'http://localhost:3000/api/users/changePassword';
 
   user = signal<User | null>(null);
-  dogs = signal<Dog[]>([]);
-
-  loadUserProfile(): Observable<{ user: User }> {
-    return this.http.get<{ user: User }>(this.userProfileUrl, {
-      withCredentials: true
-    });
-  }
-
-  loadUserDogs(): Observable<{ dogs: Dog[] }> {
-    return this.http.get<{ dogs: Dog[] }>(this.userDogsUrl, {
-      withCredentials: true
-    });
-  }
-  clearUserData(): void {
-    this.user.set(null);
-    this.dogs.set([]);
-  }
-  dogNames = computed(() => {
-    const dogs = this.dogs();
-    const names = dogs.map(d => d.name);
-
-    if (names.length === 0) return '';
-    if (names.length === 1) return names[0];
-    if (names.length === 2) return `${names[0]} y ${names[1]}`;
-
-    const last = names.pop();
-    return `${names.join(', ')} y ${last}`;
-  });
-
-  fetchAndSetUser(): void {
+  fetchUserOnly(): void {
     this.loadUserProfile().subscribe({
       next: (res) => {
-        console.log('📦 Perfil recibido:', res);
         this.user.set(res.user);
-        
-        this.loadUserDogs().subscribe({
-          next: (dogRes) => {
-            this.dogs.set(dogRes.dogs || []);
-          },
-          error: (err) => {
-            console.error('Error al obtener los perros:', err);
-            this.dogs.set([]);
-          }
-        });
       },
       error: (err) => {
-        console.error('Error al cargar el perfil:', err);
-        this.clearUserData(); 
+        console.error('Error al cargar perfil:', err);
+        this.clearUser();
       }
     });
   }
   
-  
+  loadUserProfile(): Observable<{ user: User }> {
+    return this.http.get<{ user: User }>(this.apiUrl, { withCredentials: true });
+  }
+
+  updateProfile(data: Partial<User>): Observable<{ user: User }> {
+    return this.http.put<{ user: User }>(this.apiUrl, data, { withCredentials: true });
+  }
+
+  changePassword(data: ChangePasswordDTO) {
+    return this.http.post<{ message: string }>(this.passwordUrl, data, { withCredentials: true });
+  }
+
   getUser(): User | null {
     return this.user();
   }
 
-  getDogs(): Dog[] {
-    return this.dogs();
+  setUser(user: User | null) {
+    this.user.set(user);
   }
 
-
-  updateProfile(data: Partial<User>): Observable<{ user: User }> {
-    return this.http.put<{ user: User }>(this.userProfileUrl, data, {
-      withCredentials: true
-    });
+  clearUser() {
+    this.user.set(null);
   }
-  changePassword(data: ChangePasswordDTO) {
-    return this.http.post<{ message: string }>(
-      `${this.apiUrl}/users/changePassword`,
-      data,
-      { withCredentials: true }
-    );
-  }
-  
 }

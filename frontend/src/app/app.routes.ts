@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { MainLayoutComponent } from './components/layouts/main-layout/main-layout.component';
 import { AuthLayoutComponent } from './components/layouts/auth-layout/auth-layout.component';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -21,6 +22,7 @@ export const routes: Routes = [
       },
       {
         path: 'map',
+        canActivate: [authGuard],
         loadComponent: () =>
           import('./components/mapa/mapa.component').then(
             m => m.MapaComponent
@@ -28,6 +30,7 @@ export const routes: Routes = [
       },
       {
         path: 'profile',
+        canActivate: [authGuard],
         loadComponent: () =>
           import('./components/perfil/perfil.component').then(
             m => m.PerfilComponent

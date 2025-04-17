@@ -1,27 +1,26 @@
 <div class="w-full h-full flex flex-col justify-between cursor-pointer" (click)="selectDog()">
-
   <div class="relative">
     <img
       [src]="dog.photo || 'https://res.cloudinary.com/dcrpz7yol/image/upload/v1744221861/perrito-default_smy8eu.png'"
       alt="Foto de {{ dog.name }}"
       class="w-full h-48 object-cover transition-all duration-500"
     />
-
     <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
     <div class="absolute bottom-4 left-0 right-0 text-center">
       <h2 class="text-2xl font-bold text-white drop-shadow-lg">
         @if (!editing()) {
           {{ dog.name }}
         } @else {
-          <input 
-            [(ngModel)]="form().name" 
-            class="input input-sm input-ghost w-3/4 bg-white/90 text-center text-gray-800 transition-all duration-300" 
+          <input
+            [(ngModel)]="form().name"
+            class="input input-sm input-ghost w-3/4 bg-white/90 text-center text-gray-800 transition-all duration-300"
             placeholder="Nombre"
           />
         }
       </h2>
     </div>
   </div>
+
   <div class="p-5 space-y-4 flex-grow">
     <div class="space-y-3">
       <div class="flex items-start gap-3">
@@ -31,14 +30,15 @@
           @if (!editing()) {
             <p class="font-medium">{{ dog.breed || 'No especificado' }}</p>
           } @else {
-            <input 
-              [(ngModel)]="form().breed" 
-              class="input input-xs input-bordered w-full mt-1" 
+            <input
+              [(ngModel)]="form().breed"
+              class="input input-xs input-bordered w-full mt-1"
               placeholder="Ej: Labrador"
             />
           }
         </div>
       </div>
+
       <div class="flex items-start gap-3">
         <fa-icon [icon]="['fas', 'calendar-day']" class="text-purple-500 mt-0.5 flex-shrink-0"></fa-icon>
         <div class="flex-1">
@@ -46,16 +46,15 @@
           @if (!editing()) {
             <p class="font-medium">{{ dog.birthday ? (dog.birthday | date: 'mediumDate') : 'No especificada' }}</p>
           } @else {
-            <input 
-              type="date" 
-              [(ngModel)]="form().birthday" 
+            <input
+              type="date"
+              [(ngModel)]="form().birthday"
               class="input input-xs input-bordered w-full mt-1"
             />
           }
         </div>
       </div>
 
-     
       <div class="flex items-start gap-3">
         <fa-icon [icon]="['fas', 'ruler-combined']" class="text-purple-500 mt-0.5 flex-shrink-0"></fa-icon>
         <div class="flex-1">
@@ -96,6 +95,7 @@
         </div>
       </div>
     </div>
+
     <div class="border-t border-gray-100 pt-4">
       <label class="text-xs text-gray-500 flex items-center gap-2 mb-2">
         <fa-icon [icon]="['fas', 'heart']" class="text-purple-500"></fa-icon>
@@ -113,21 +113,21 @@
         </div>
       } @else {
         <div class="relative">
-          <div 
+          <div
             class="input input-bordered input-sm w-full flex items-center justify-between cursor-pointer"
             (click)="togglePersonalityEditor()"
           >
             <span class="truncate text-sm">
               {{ (form().personality ?? []).join(', ') || 'Selecciona opciones' }}
             </span>
-            <fa-icon 
-              [icon]="['fas', showPersonalityOptions() ? 'chevron-up' : 'chevron-down']" 
+            <fa-icon
+              [icon]="['fas', showPersonalityOptions() ? 'chevron-up' : 'chevron-down']"
               class="text-gray-500"
             ></fa-icon>
           </div>
 
           @if (showPersonalityOptions()) {
-            <div class="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg p-2 max-h-[15rem] overflow-y-auto">
+            <div class="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg p-2 max-h-[15rem] overflow-y-auto bottom-0">
               <div class="grid grid-cols-2 gap-2">
                 @for (trait of personalityOptions; track trait) {
                   <label class="flex items-center gap-2 text-sm cursor-pointer p-1 hover:bg-purple-50 rounded">
@@ -148,11 +148,10 @@
     </div>
   </div>
 
-
   <div class="flex justify-end gap-2 p-4 border-t border-gray-100">
     @if (!editing()) {
-      <button 
-        class="btn btn-sm btn-outline btn-primary" 
+      <button
+        class="btn btn-sm btn-outline btn-primary"
         (click)="startEditing(); $event.stopPropagation()"
       >
         <fa-icon [icon]="['fas', 'pen']"></fa-icon> Editar

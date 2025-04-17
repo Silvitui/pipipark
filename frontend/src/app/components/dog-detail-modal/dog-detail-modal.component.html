@@ -1,0 +1,37 @@
+<dialog [open]="dog !== null" class="modal">
+    <div class="modal-box w-[90%] max-w-[400px] max-h-[90vh] overflow-y-auto mx-auto p-6 rounded-lg shadow-lg bg-white relative">
+      <button class="absolute top-2 right-2 text-gray-400 hover:text-red-500" (click)="closeModal()">✕</button>
+  
+      @if (dog) {
+        <div class="flex flex-col items-center text-center gap-3">
+          <img [src]="dog.photo" class="w-24 h-24 rounded-full border-4 border-purple-400 shadow" />
+          <h3 class="text-xl font-bold">{{ dog.name }}</h3>
+          <p>🐶 Raza: {{ dog.breed }}</p>
+          <p>⚖️ Tamaño: {{ dog.size }}</p>
+          <p>🎂 Nacimiento: {{ dog.birthday | date:'longDate' }}</p>
+          <p>🚻 Género: {{ dog.gender }}</p>
+          <p>🩺 Castrado: {{ dog.castrated ? 'Sí' : 'No' }}</p>
+  
+          <div class="mt-2 flex flex-wrap gap-2 justify-center">
+            @for (trait of dog.personality; track trait) {
+              <span class="badge badge-outline badge-secondary">
+                {{ trait }}
+              </span>
+            }
+          </div>
+  
+          @if (compatibility) {
+            <div class="mt-4 border-t pt-2 w-full">
+              <p class="font-bold text-green-600">
+                 Compatibilidad: {{ compatibility.score }}%
+              </p>
+              <p class="text-xs italic text-gray-500">
+                {{ compatibility.summary }}
+              </p>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </dialog>
+  

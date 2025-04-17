@@ -1,32 +1,41 @@
-import { DogService } from './../../services/dog.service';
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { DogCardComponent } from '../dog-card/dog-card.component';
-import { UserService } from '../../services/user.service';
-import { Dog } from '../../interfaces/dog.interface';
 import { ButtonAddDogComponent } from '../shared/button-add-dog/button-add-dog.component';
 import { DeleteDogComponent } from '../delete-dog/delete-dog.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-
+import { Dog } from '../../interfaces/dog.interface';
+import { UserService } from '../../services/user.service';
+import { UserDogService } from '../../services/user-dog.service';
+import { DogService } from '../../services/dog.service';
 
 @Component({
   selector: 'app-perfil',
   standalone: true,
-  imports: [CommonModule, FormsModule,DogCardComponent,ButtonAddDogComponent,DeleteDogComponent,FontAwesomeModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    DogCardComponent,
+    ButtonAddDogComponent,
+    DeleteDogComponent,
+    FontAwesomeModule
+  ],
   templateUrl: './perfil.component.html',
 })
 export class PerfilComponent implements OnInit {
   userService = inject(UserService);
+  userDogService = inject(UserDogService);
   DogService = inject(DogService);
+
   addDogOpen = signal(false);
   selectedDogToDelete = signal<Dog | null>(null);
-showDeleteModal = signal(false);
+  showDeleteModal = signal(false);
 
   user = computed(() => this.userService.getUser());
-  dogs = computed(() => this.userService.getDogs());
+  dogs = computed(() => this.userDogService.getDogs());
 
   editing = signal(false);
   form = signal({ userName: '', email: '' });
@@ -42,7 +51,9 @@ showDeleteModal = signal(false);
   successMessage = signal('');
 
   ngOnInit(): void {
-    this.userService.fetchAndSetUser(); 
+    this.userService.fetchUserOnly();
+
+    this.userDogService.fetchAndSetUserDogs();
 
     const currentUser = this.user();
     if (currentUser) {
@@ -52,10 +63,12 @@ showDeleteModal = signal(false);
       });
     }
   }
+
   handleDogModalClose() {
     this.addDogOpen.set(false);
-    this.userService.fetchAndSetUser(); 
+    this.userDogService.fetchAndSetUserDogs();
   }
+
   startEditing() {
     const currentUser = this.user();
     if (currentUser) {
@@ -73,16 +86,11 @@ showDeleteModal = signal(false);
 
   saveChanges() {
     const updated = this.form();
-    if (!updated.userName || !updated.email) {
-      console.warn('❗ No hay datos que actualizar');
-      return;
-    }
-  
-    console.log('📤 Enviando al backend:', updated);
-  
+    if (!updated.userName || !updated.email) return;
+
     this.userService.updateProfile(updated).subscribe({
       next: () => {
-        this.userService.fetchAndSetUser();
+        this.userService.fetchUserOnly();
         this.editing.set(false);
       },
       error: (err) => {
@@ -90,8 +98,7 @@ showDeleteModal = signal(false);
       }
     });
   }
-  
-  
+
   togglePasswordForm() {
     this.changingPassword.update(v => !v);
     this.passwordForm.set({ currentPassword: '', newPassword: '', confirmPassword: '' });
@@ -124,27 +131,26 @@ showDeleteModal = signal(false);
         this.successMessage.set('');
       }
     });
-    
   }
 
   trackById(index: number, dog: Dog) {
     return dog._id;
-
   }
+
   openDeleteModal(dog: Dog) {
     this.selectedDogToDelete.set(dog);
+    this.showDeleteModal.set(true);
   }
-  
+
   handleModalClose() {
     this.showDeleteModal.set(false);
     this.selectedDogToDelete.set(null);
   }
-  
-  
+
   handleDeleteConfirmed(dogId: string) {
     this.DogService.deleteDog(dogId).subscribe({
       next: () => {
-        this.userService.fetchAndSetUser();
+        this.userDogService.fetchAndSetUserDogs();
         this.showDeleteModal.set(false);
         this.selectedDogToDelete.set(null);
       },
@@ -153,7 +159,4 @@ showDeleteModal = signal(false);
       }
     });
   }
-  
-
-
 }

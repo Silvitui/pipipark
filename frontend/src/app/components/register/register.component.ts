@@ -176,9 +176,17 @@ export class RegisterComponent {
   }
 
   submitForm(): void {
-    let hasError = false;
+    if (!this.validateAllFields()) return;
+
     const finalAnswers = this.answers();
-    const dogPhotoFile: File = finalAnswers['photo'];
+    const payload = this.buildPayload(finalAnswers);
+    const dogPhotoFile = finalAnswers['photo'];
+
+    this.submitRegistration(payload, dogPhotoFile);
+  }
+
+  validateAllFields(): boolean {
+    let hasError = false;
 
     this.questions.forEach((q, i) => {
       if (q.required && this.fieldHasError(q.field)) {
@@ -191,10 +199,14 @@ export class RegisterComponent {
       const firstErrorIndex = this.questions.findIndex(q => this.fieldHasError(q.field));
       if (firstErrorIndex !== -1) this.currentStep.set(firstErrorIndex);
       this.showGlobalError.set(true);
-      return;
+      return false;
     }
 
-    const payload = {
+    return true;
+  }
+
+ buildPayload(finalAnswers: any) {
+    return {
       userName: finalAnswers['userName'] || '',
       email: finalAnswers['email'] || '',
       password: finalAnswers['password'] || '',
@@ -208,17 +220,14 @@ export class RegisterComponent {
         personality: finalAnswers['personality'] || []
       }
     };
+  }
 
+  submitRegistration(payload: any, dogPhotoFile: File): void {
     this.authService.registerUser(payload).subscribe({
       next: (res) => {
         const dogId = res?.dog?._id;
         if (dogPhotoFile && dogId) {
-          const formData = new FormData();
-          formData.append('photo', dogPhotoFile);
-          this.DogService.uploadDogPhoto(dogId, formData).subscribe({
-            next: () => this.router.navigate(['/login']),
-            error: () => this.router.navigate(['/login'])
-          });
+          this.uploadDogPhotoAfterRegistration(dogId, dogPhotoFile);
         } else {
           this.router.navigate(['/login']);
         }
@@ -226,6 +235,14 @@ export class RegisterComponent {
       error: (err) => {
         console.error(' Error en el registro:', err);
       }
+    });
+  }
+uploadDogPhotoAfterRegistration(dogId: string, photo: File): void {
+    const formData = new FormData();
+    formData.append('photo', photo);
+    this.DogService.uploadDogPhoto(dogId, formData).subscribe({
+      next: () => this.router.navigate(['/login']),
+      error: () => this.router.navigate(['/login'])
     });
   }
 }
